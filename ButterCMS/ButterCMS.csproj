@@ -53,7 +53,6 @@
     <Compile Include="Models\CategoriesResponse.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\CategoryResponse.cs" />
-    <Compile Include="Models\ContentFieldsResponse.cs" />
     <Compile Include="Models\Post.cs" />
     <Compile Include="Models\PostLight.cs" />
     <Compile Include="Models\PostMeta.cs" />
