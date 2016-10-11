@@ -55,7 +55,7 @@ Listing posts returns a [PostsResponse](#postsresponse-class) object. This objec
 ```C#
 PostsResponse posts = butterClient.ListPosts();
 
-PostsResponse filteredPosts = await butterClient.ListPostsAsync(page: 2, pageSize: 5, exlcudeBody: true, authorSlug: "alice", categorySlug: "dot-net");
+PostsResponse filteredPosts = await butterClient.ListPostsAsync(page: 2, pageSize: 5, excludeBody: true, authorSlug: "alice", categorySlug: "dot-net");
 ```
 ###Retrieving a Single Post
 Retrieving a single Post will return a PostResponse object. This object consists of a single [Post](#post-class) and Post [Metadata](#postmeta-class). Post Metadata offers hints about the Previous and Next posts.
