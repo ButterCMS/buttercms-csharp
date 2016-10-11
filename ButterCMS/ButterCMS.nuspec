@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>ButterCMS</id>
+    <version>1.0.0</version>
+    <title>ButterCMS</title>
+    <authors>ButterCMS, Brandon Nicoll</authors>
+    <owners>ButterCMS</owners>
+    <licenseUrl>https://github.com/buttercms/buttercms-csharp/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/buttercms/buttercms-csharp/</projectUrl>
+    <iconUrl>https://avatars0.githubusercontent.com/u/16144259</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>API Client for ButterCMS; including both synchronous and asynchronous API endpoint methods.</description>
+    <summary>ButterCMS API Wrapper for .NET</summary>
+    <releaseNotes>Initial Release</releaseNotes>
+    <copyright>Copyright 2016 Butter</copyright>
+    <tags>ButterCMS CMS</tags>
+    <language>en-US</language>
+    <dependencies>
+          <dependency id="Newtonsoft.Json" version="7.0.1"/>
+          <dependency id="System.Net.Http" version="4.0.0"/>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\Release\ButterCMS*.*" target="lib\net45" />
+  </files>
+</package>
