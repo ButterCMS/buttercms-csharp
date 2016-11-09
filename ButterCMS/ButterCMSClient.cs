@@ -24,7 +24,9 @@ namespace ButterCMS
         private const string listAuthorsEndpoint = "v2/authors";
         private const string retrieveAuthorEndpoint = "v2/authors/{0}";
         private const string listCategoriesEndpoint = "v2/categories";
+        private const string listTagsEndpoint = "v2/tags";
         private const string retrieveCategoryEndpoint = "v2/categories/{0}";
+        private const string retrieveTagEndpoint = "v2/tags/{0}";
         private const string rssFeedEndpoint = "v2/feeds/rss";
         private const string atomEndpoint = "v2/feeds/atom";
         private const string siteMapEndpoint = "v2/feeds/sitemap";
@@ -280,6 +282,70 @@ namespace ButterCMS
                 queryString.Append("&include=recent_posts");
             }
             var response = JsonConvert.DeserializeObject<CategoryResponse>(await ExecuteAsync(queryString.ToString()), serializerSettings);
+            if (response != null && response.Data != null)
+            {
+                return response.Data;
+            }
+            return null;
+        }
+
+        public IEnumerable<Tag> ListTags(bool includeRecentPosts = false)
+        {
+            var queryString = new StringBuilder();
+            queryString.Append(listTagsEndpoint);
+            queryString.Append("?");
+            queryString.Append(authTokenParam);
+            if (includeRecentPosts)
+            {
+                queryString.Append("&include=recent_posts");
+            }
+            var response = JsonConvert.DeserializeObject<TagsResponse>(Execute(queryString.ToString()), serializerSettings);
+            return response.Data ?? null;
+        }
+
+        public async Task<IEnumerable<Tag>> ListTagsAsync(bool includeRecentPosts = false)
+        {
+            var queryString = new StringBuilder();
+            queryString.Append(listTagsEndpoint);
+            queryString.Append("?");
+            queryString.Append(authTokenParam);
+            if (includeRecentPosts)
+            {
+                queryString.Append("&include=recent_posts");
+            }
+            var response = JsonConvert.DeserializeObject<TagsResponse>(await ExecuteAsync(queryString.ToString()), serializerSettings);
+            return response.Data ?? null;
+        }
+
+        public Tag RetrieveTag(string tagSlug, bool includeRecentPosts = false)
+        {
+            var queryString = new StringBuilder();
+            queryString.Append(string.Format(retrieveTagEndpoint, tagSlug));
+            queryString.Append("?");
+            queryString.Append(authTokenParam);
+            if (includeRecentPosts)
+            {
+                queryString.Append("&include=recent_posts");
+            }
+            var response = JsonConvert.DeserializeObject<TagResponse>(Execute(queryString.ToString()), serializerSettings);
+            if (response != null && response.Data != null)
+            {
+                return response.Data;
+            }
+            return null;
+        }
+
+        public async Task<Tag> RetrieveTagAsync(string tagSlug, bool includeRecentPosts = false)
+        {
+            var queryString = new StringBuilder();
+            queryString.Append(string.Format(retrieveTagEndpoint, tagSlug));
+            queryString.Append("?");
+            queryString.Append(authTokenParam);
+            if (includeRecentPosts)
+            {
+                queryString.Append("&include=recent_posts");
+            }
+            var response = JsonConvert.DeserializeObject<TagResponse>(await ExecuteAsync(queryString.ToString()), serializerSettings);
             if (response != null && response.Data != null)
             {
                 return response.Data;
