@@ -20,13 +20,15 @@ namespace ButterCMS.Tests
         {
             var posts = butterClient.ListPosts();
             Assert.IsNotNull(posts);
+            CollectionAssert.IsNotEmpty(posts.Data);
         }
 
         [Test]
         public void ListPosts_FullParams_ShouldReturnPosts()
         {   
-            var posts = butterClient.ListPosts(page: 1, pageSize: 2, excludeBody: true, authorSlug: "api-test", categorySlug: "test-category");
+            var posts = butterClient.ListPosts(page: 1, pageSize: 2, excludeBody: true, authorSlug: "api-test", categorySlug: "test-category", tagSlug: "test-tag");
             Assert.IsNotNull(posts);
+            CollectionAssert.IsNotEmpty(posts.Data);
         }
 
         [Test]
@@ -41,13 +43,15 @@ namespace ButterCMS.Tests
         {   
             var posts = await butterClient.ListPostsAsync();
             Assert.IsNotNull(posts);
+            CollectionAssert.IsNotEmpty(posts.Data);
         }
 
         [Test]
         public async Task ListPostsAsync_FullParams_ShouldReturnPosts()
         {   
-            var posts = await butterClient.ListPostsAsync(page: 1, pageSize: 2, excludeBody: true, authorSlug: "api-test", categorySlug: "test-category");
+            var posts = await butterClient.ListPostsAsync(page: 1, pageSize: 2, excludeBody: true, authorSlug: "api-test", categorySlug: "test-category", tagSlug: "test-tag");
             Assert.IsNotNull(posts);
+            CollectionAssert.IsNotEmpty(posts.Data);
         }
 
         [Test]

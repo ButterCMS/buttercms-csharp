@@ -21,19 +21,19 @@ namespace ButterCMS
 
         private const string apiBaseAddress = "https://api.buttercms.com/";
 
-        private const string listPostsEndpoint = "v2/posts";
-        private const string retrievePostEndpoint = "v2/posts/{0}";
-        private const string searchPostsEndpoint = "v2/search";
-        private const string listAuthorsEndpoint = "v2/authors";
-        private const string retrieveAuthorEndpoint = "v2/authors/{0}";
-        private const string listCategoriesEndpoint = "v2/categories";
-        private const string listTagsEndpoint = "v2/tags";
-        private const string retrieveCategoryEndpoint = "v2/categories/{0}";
-        private const string retrieveTagEndpoint = "v2/tags/{0}";
-        private const string rssFeedEndpoint = "v2/feeds/rss";
-        private const string atomEndpoint = "v2/feeds/atom";
-        private const string siteMapEndpoint = "v2/feeds/sitemap";
-        private const string contentEndpoint = "v2/content";
+        private const string listPostsEndpoint = "v2/posts/";
+        private const string retrievePostEndpoint = "v2/posts/{0}/";
+        private const string searchPostsEndpoint = "v2/search/";
+        private const string listAuthorsEndpoint = "v2/authors/";
+        private const string retrieveAuthorEndpoint = "v2/authors/{0}/";
+        private const string listCategoriesEndpoint = "v2/categories/";
+        private const string listTagsEndpoint = "v2/tags/";
+        private const string retrieveCategoryEndpoint = "v2/categories/{0}/";
+        private const string retrieveTagEndpoint = "v2/tags/{0}/";
+        private const string rssFeedEndpoint = "v2/feeds/rss/";
+        private const string atomEndpoint = "v2/feeds/atom/";
+        private const string siteMapEndpoint = "v2/feeds/sitemap/";
+        private const string contentEndpoint = "v2/content/";
         private const int defaultPageSize = 10;
         private string authTokenParam
         {
@@ -58,21 +58,21 @@ namespace ButterCMS
             serializerSettings.ContractResolver = new SnakeCaseContractResolver();
         }
 
-        public PostsResponse ListPosts(int page = 1, int pageSize = defaultPageSize, bool excludeBody = false, string authorSlug = null, string categorySlug = null)
+        public PostsResponse ListPosts(int page = 1, int pageSize = defaultPageSize, bool excludeBody = false, string authorSlug = null, string categorySlug = null, string tagSlug = null)
         {
-            var queryString = ParseListPostsParams(page, pageSize, excludeBody, authorSlug, categorySlug);
+            var queryString = ParseListPostsParams(page, pageSize, excludeBody, authorSlug, categorySlug, tagSlug);
             var postsResponse = JsonConvert.DeserializeObject<PostsResponse>(Execute(queryString), serializerSettings);
             return postsResponse;
         }
 
-        public async Task<PostsResponse> ListPostsAsync(int page = 1, int pageSize = defaultPageSize, bool excludeBody = false, string authorSlug = null, string categorySlug = null)
+        public async Task<PostsResponse> ListPostsAsync(int page = 1, int pageSize = defaultPageSize, bool excludeBody = false, string authorSlug = null, string categorySlug = null, string tagSlug = null)
         {
-            var queryString = ParseListPostsParams(page, pageSize, excludeBody, authorSlug, categorySlug);
+            var queryString = ParseListPostsParams(page, pageSize, excludeBody, authorSlug, categorySlug, tagSlug);
             var postsResponse = JsonConvert.DeserializeObject<PostsResponse>(await ExecuteAsync(queryString), serializerSettings);
             return postsResponse;
         }
 
-        private string ParseListPostsParams(int page = 1, int pageSize = defaultPageSize, bool excludeBody = false, string authorSlug = null, string categorySlug = null)
+        private string ParseListPostsParams(int page = 1, int pageSize = defaultPageSize, bool excludeBody = false, string authorSlug = null, string categorySlug = null, string tagSlug = null)
         {
             var queryString = new StringBuilder();
             queryString.Append(listPostsEndpoint);
@@ -102,6 +102,11 @@ namespace ButterCMS
             if (!string.IsNullOrEmpty(categorySlug))
             {
                 queryString.Append(string.Format("&category_slug={0}", categorySlug));
+            }
+
+            if (!string.IsNullOrEmpty(tagSlug))
+            {
+                queryString.Append(string.Format("&tag_slug={0}", tagSlug));
             }
             return queryString.ToString();
         }
