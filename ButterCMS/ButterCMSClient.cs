@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,6 +47,7 @@ namespace ButterCMS
 
         public ButterCMSClient(string authToken, TimeSpan? timeOut = null, int maxRequestTries = 3)
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             httpClient = new HttpClient
             {
                 Timeout = timeOut ?? defaultTimeout,
