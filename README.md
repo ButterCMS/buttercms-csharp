@@ -51,21 +51,22 @@ Listing posts returns a [PostsResponse](#postsresponse-class) object. This objec
 |authorSlug(optional) | |Filter posts by an author’s slug.|
 |categorySlug(optional) | | Filter posts by a category’s slug.
 
-####Examples:
+#### Examples:
 ```C#
 PostsResponse posts = butterClient.ListPosts();
 
-PostsResponse filteredPosts = await butterClient.ListPostsAsync(page: 2, pageSize: 5, exlcudeBody: true, authorSlug: "alice", categorySlug: "dot-net");
+PostsResponse filteredPosts = await butterClient.ListPostsAsync(page: 2, pageSize: 5, excludeBody: true, authorSlug: "alice", categorySlug: "dot-net");
 ```
-###Retrieving a Single Post
+
+### Retrieving a Single Post
 Retrieving a single Post will return a PostResponse object. This object consists of a single [Post](#post-class) and Post [Metadata](#postmeta-class). Post Metadata offers hints about the Previous and Next posts.
 
-####RetrievePost() Parameters:
+#### RetrievePost() Parameters:
 | Parameter|Description|
 | ---|---|
 | slug|The slug of the post to be retrieved.|
 
-####Examples:
+#### Examples:
 ```C#
 PostResponse controversialPost = butterClient.RetrievePost("tabs-vs-spaces-throwdown");
 
@@ -73,17 +74,17 @@ PostResponse safePost = await butterClient.RetrievePostAsync("puppies-and-kitten
 
 ```
 
-###Searching Posts
+### Searching Posts
 Searching posts will return the same object as listing posts, [PostsResponse](#postsresponse-class)
 
-####SearchPosts() Parameters:
+#### SearchPosts() Parameters:
 | Parameter|Default|Description|
 | ---|---|---|
 | query |  | Search query |
 | page(optional) | 1 | Used to paginate through older posts. |
 | pageSize(optional) | 10 |  Used to set the number of blog posts shown per page. |
 
-####Examples:
+#### Examples:
 ```C#
 PostsResponse posts = butterClient.SearchPosts("spaceships");
 
@@ -92,16 +93,17 @@ PostsResponse caffeinePosts = await butterClient.SearchPostsAsync(query: "coffee
 ```
 
 ## Authors
-###List Authors
+
+### List Authors
 
 Listing Authors returns IEnumerable&lt;[Author](#author-class)&gt;
 
-####ListAuthors() Parameters:
+#### ListAuthors() Parameters:
 | Parameter|Description|
 | ---|---|
 | includeRecentPosts(optional)|If true, will return the author's recent posts in the response|
 
-####Examples:
+#### Examples:
 ```C#
 IEnumerable<Author> authors = butterClient.ListAuthors();
 
@@ -109,16 +111,16 @@ IEnumerable<Author> authorsWithPosts = await butterClient.ListAuthorsAsync(inclu
 
 ```
 
-###Retrieve a Single Author
+### Retrieve a Single Author
 Retrieving an author returns an [Author](#author-class) object
 
-####RetrieveAuthor() Parameters:
+#### RetrieveAuthor() Parameters:
 | Parameter|Description|
 | ---|---|
 |authorSlug|The slug of the author to be retrieved.|
 | includeRecentPosts(optional)|If true, will return the author's recent posts in the response|
 
-####Examples:
+#### Examples:
 ```C#
 Author sally = butterClient.RetrieveAuthor("sally");
 
@@ -129,12 +131,12 @@ Author tylerAndPosts = await butterClient.RetrieveAuthorAsync(authorSlug: "tyler
 ###List Categories
 Listing Categories returns IEnumerable&lt;[Category](#category-class)&gt;
 
-####ListCategories() Parameters
+#### ListCategories() Parameters
 | Parameter|Description|
 | ---|---|
 | includeRecentPosts(optional)|If true, will return recent posts along with categories|
 
-####Examples:
+#### Examples:
 ```C#
 IEnumerable<Category> categories = butterClient.ListCategories();
 
@@ -143,29 +145,30 @@ IEnumerable<Category> categoriesWithPosts = await butterClient.ListCategoriesAsy
 ```
 
 
-###Retrieve a Single Category
+### Retrieve a Single Category
 Retrieving a single category returns [Category](#category-class)
-####RetrieveCategory() Parameters:
+
+#### RetrieveCategory() Parameters:
 | Parameter|Description|
 | ---|---|
 |categorySlug|The slug of the category to be retrieved.|
 | includeRecentPosts(optional)|If true, will return recent posts along with category|
 
-####Examples:
+#### Examples:
 ```C#
  Category dotnetCategory = butterClient.RetrieveCategory("dotnet");
  
  Category fsharpCategoryWithPosts = await butterClient.RetrieveCategoryAsync(categorySlug: "fsharp", includeRecentPosts: true);
 
 ```
-##Feeds
+## Feeds
 Each of the feeds methods returns an [XmlDocument](https://msdn.microsoft.com/en-us/library/system.xml.xmldocument%28v=vs.110%29.aspx).
 
 
-###RSS Feed
+### RSS Feed
 Retrieve a fully generated RSS feed for your blog.
 
-####Examples:
+#### Examples:
 ```C#
  XmlDocument rssFeed = butterClient.GetRSSFeed();
  
@@ -173,10 +176,10 @@ Retrieve a fully generated RSS feed for your blog.
 
 ```
 
-###Atom Feed
+### Atom Feed
 Retrieve a fully generated Atom feed for your blog.
 
-####Examples:
+#### Examples:
 ```C#
  XmlDocument atomFeed = butterClient.GetAtomFeed();
  
@@ -184,10 +187,10 @@ Retrieve a fully generated Atom feed for your blog.
 
 ```
 
-###Sitemap
+### Sitemap
 Retrieve a fully generated sitemap for your blog.
 
-####Examples:
+#### Examples:
 ```C#
  XmlDocument siteMap = butterClient.GetSitemap();
  
@@ -195,16 +198,16 @@ Retrieve a fully generated sitemap for your blog.
 
 ```
 
-##Content Fields
+## Content Fields
 
 As demonstrated in the [Content Fields documentation](https://buttercms.com/docs/content/), any number of user-defined content fields can be retrieved from the API. Expanding on the examples in the docs, https://api.buttercms.com/v2/content/?keys=homepage_headline,team_members&auth_token=321478403e868f0fc41f0115731f330ff720ce0b returns an object that won't fit neatly in one C# object. For this reason, the client forwards the JSON string response and leaves deserialization up to the caller.
 
-####RetrieveContentFields() Parameters:
+#### RetrieveContentFields() Parameters:
 | Parameter|Description|
 | ---|---|
 |keys|String array of desired keys|
 
-####Examples:
+#### Examples:
 ```C#
 var keys = new string[2] { "team_members[name=Elon]", "homepage_headline" };
 var contentFields = await butterClient.RetrieveContentFieldsJSONAsync(keys);
@@ -214,20 +217,20 @@ var contentFields = await butterClient.RetrieveContentFieldsJSONAsync(keys);
 
 ## Class Definitions
 
-###PostsResponse Class:
+### PostsResponse Class:
 | Property | Type|
 |----|---|
 |Meta| [PostsMeta](#postsmeta-class)|
 |Data| IEnumerable&lt;[Post](#post-class)&gt;|
 
-###PostsMeta Class:
+### PostsMeta Class:
 | Property | Type|
 |----|---|
 |Count| int|
 |NextPage| int?|
 |PreviousPage| int?|
 
-###Post Class:
+### Post Class:
 | Property | Type|
 |----|---|
 |Url|string|
@@ -251,26 +254,26 @@ var contentFields = await butterClient.RetrieveContentFieldsJSONAsync(keys);
 |Draft|1|
 |Published|2|
 
-###PostResponse Class:
+### PostResponse Class:
 | Property | Type|
 |----|---|
 |Meta|[PostMeta](#postmeta-class)|
 |Data|[Post](#post-class)|
 
-###PostMeta Class:
+### PostMeta Class:
 | Property | Type|
 |----|---|
 |NextPost|[PostLight](#postlight-class)|
 |PreviousPost|[PostLight](#postlight-class)|
 
-###PostLight Class:
+### PostLight Class:
 | Property | Type|
 |----|---|
 |Slug|string|
 |Title|string|
 |FeaturedImage|string|
 
-###Author Class:
+### Author Class:
 | Property | Type|
 |----|---|
 |FirstName| string|
@@ -287,7 +290,7 @@ var contentFields = await butterClient.RetrieveContentFieldsJSONAsync(keys);
 |ProfileImage| string|
 |RecentPosts| IEnumerable&lt;[Post](#post-class)&gt;|
 
-###Category Class:
+### Category Class:
 | Property | Type|
 |----|---|
 |Name| string|

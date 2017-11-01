@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,23 +13,28 @@ namespace ButterCMS
 {
     public class ButterCMSClient
     {
+        private static readonly string generalExMsg = "There is a problem with the ButterCMS service";
+
         private string authToken;
         private HttpClient httpClient;
         private TimeSpan defaultTimeout = new TimeSpan(0, 0, 10);
+        private int maxRequestTries;
 
         private const string apiBaseAddress = "https://api.buttercms.com/";
 
-        private const string listPostsEndpoint = "v2/posts";
-        private const string retrievePostEndpoint = "v2/posts/{0}";
-        private const string searchPostsEndpoint = "v2/search";
-        private const string listAuthorsEndpoint = "v2/authors";
-        private const string retrieveAuthorEndpoint = "v2/authors/{0}";
-        private const string listCategoriesEndpoint = "v2/categories";
-        private const string retrieveCategoryEndpoint = "v2/categories/{0}";
-        private const string rssFeedEndpoint = "v2/feeds/rss";
-        private const string atomEndpoint = "v2/feeds/atom";
-        private const string siteMapEndpoint = "v2/feeds/sitemap";
-        private const string contentEndpoint = "v2/content";
+        private const string listPostsEndpoint = "v2/posts/";
+        private const string retrievePostEndpoint = "v2/posts/{0}/";
+        private const string searchPostsEndpoint = "v2/search/";
+        private const string listAuthorsEndpoint = "v2/authors/";
+        private const string retrieveAuthorEndpoint = "v2/authors/{0}/";
+        private const string listCategoriesEndpoint = "v2/categories/";
+        private const string listTagsEndpoint = "v2/tags/";
+        private const string retrieveCategoryEndpoint = "v2/categories/{0}/";
+        private const string retrieveTagEndpoint = "v2/tags/{0}/";
+        private const string rssFeedEndpoint = "v2/feeds/rss/";
+        private const string atomEndpoint = "v2/feeds/atom/";
+        private const string siteMapEndpoint = "v2/feeds/sitemap/";
+        private const string contentEndpoint = "v2/content/";
         private const int defaultPageSize = 10;
         private string authTokenParam
         {
@@ -39,34 +45,36 @@ namespace ButterCMS
         }
         private JsonSerializerSettings serializerSettings;
 
-        public ButterCMSClient(string authToken, TimeSpan? timeOut = null)
+        public ButterCMSClient(string authToken, TimeSpan? timeOut = null, int maxRequestTries = 3)
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             httpClient = new HttpClient
             {
                 Timeout = timeOut ?? defaultTimeout,
                 BaseAddress = new Uri(apiBaseAddress)
             };
+            this.maxRequestTries = maxRequestTries;
             this.authToken = authToken;
 
             serializerSettings = new JsonSerializerSettings();
             serializerSettings.ContractResolver = new SnakeCaseContractResolver();
         }
 
-        public PostsResponse ListPosts(int page = 1, int pageSize = defaultPageSize, bool excludeBody = false, string authorSlug = null, string categorySlug = null)
+        public PostsResponse ListPosts(int page = 1, int pageSize = defaultPageSize, bool excludeBody = false, string authorSlug = null, string categorySlug = null, string tagSlug = null)
         {
-            var queryString = ParseListPostsParams(page, pageSize, excludeBody, authorSlug, categorySlug);
+            var queryString = ParseListPostsParams(page, pageSize, excludeBody, authorSlug, categorySlug, tagSlug);
             var postsResponse = JsonConvert.DeserializeObject<PostsResponse>(Execute(queryString), serializerSettings);
             return postsResponse;
         }
 
-        public async Task<PostsResponse> ListPostsAsync(int page = 1, int pageSize = defaultPageSize, bool excludeBody = false, string authorSlug = null, string categorySlug = null)
+        public async Task<PostsResponse> ListPostsAsync(int page = 1, int pageSize = defaultPageSize, bool excludeBody = false, string authorSlug = null, string categorySlug = null, string tagSlug = null)
         {
-            var queryString = ParseListPostsParams(page, pageSize, excludeBody, authorSlug, categorySlug);
+            var queryString = ParseListPostsParams(page, pageSize, excludeBody, authorSlug, categorySlug, tagSlug);
             var postsResponse = JsonConvert.DeserializeObject<PostsResponse>(await ExecuteAsync(queryString), serializerSettings);
             return postsResponse;
         }
 
-        private string ParseListPostsParams(int page = 1, int pageSize = defaultPageSize, bool excludeBody = false, string authorSlug = null, string categorySlug = null)
+        private string ParseListPostsParams(int page = 1, int pageSize = defaultPageSize, bool excludeBody = false, string authorSlug = null, string categorySlug = null, string tagSlug = null)
         {
             var queryString = new StringBuilder();
             queryString.Append(listPostsEndpoint);
@@ -96,6 +104,11 @@ namespace ButterCMS
             if (!string.IsNullOrEmpty(categorySlug))
             {
                 queryString.Append(string.Format("&category_slug={0}", categorySlug));
+            }
+
+            if (!string.IsNullOrEmpty(tagSlug))
+            {
+                queryString.Append(string.Format("&tag_slug={0}", tagSlug));
             }
             return queryString.ToString();
         }
@@ -287,6 +300,70 @@ namespace ButterCMS
             return null;
         }
 
+        public IEnumerable<Tag> ListTags(bool includeRecentPosts = false)
+        {
+            var queryString = new StringBuilder();
+            queryString.Append(listTagsEndpoint);
+            queryString.Append("?");
+            queryString.Append(authTokenParam);
+            if (includeRecentPosts)
+            {
+                queryString.Append("&include=recent_posts");
+            }
+            var response = JsonConvert.DeserializeObject<TagsResponse>(Execute(queryString.ToString()), serializerSettings);
+            return response.Data ?? null;
+        }
+
+        public async Task<IEnumerable<Tag>> ListTagsAsync(bool includeRecentPosts = false)
+        {
+            var queryString = new StringBuilder();
+            queryString.Append(listTagsEndpoint);
+            queryString.Append("?");
+            queryString.Append(authTokenParam);
+            if (includeRecentPosts)
+            {
+                queryString.Append("&include=recent_posts");
+            }
+            var response = JsonConvert.DeserializeObject<TagsResponse>(await ExecuteAsync(queryString.ToString()), serializerSettings);
+            return response.Data ?? null;
+        }
+
+        public Tag RetrieveTag(string tagSlug, bool includeRecentPosts = false)
+        {
+            var queryString = new StringBuilder();
+            queryString.Append(string.Format(retrieveTagEndpoint, tagSlug));
+            queryString.Append("?");
+            queryString.Append(authTokenParam);
+            if (includeRecentPosts)
+            {
+                queryString.Append("&include=recent_posts");
+            }
+            var response = JsonConvert.DeserializeObject<TagResponse>(Execute(queryString.ToString()), serializerSettings);
+            if (response != null && response.Data != null)
+            {
+                return response.Data;
+            }
+            return null;
+        }
+
+        public async Task<Tag> RetrieveTagAsync(string tagSlug, bool includeRecentPosts = false)
+        {
+            var queryString = new StringBuilder();
+            queryString.Append(string.Format(retrieveTagEndpoint, tagSlug));
+            queryString.Append("?");
+            queryString.Append(authTokenParam);
+            if (includeRecentPosts)
+            {
+                queryString.Append("&include=recent_posts");
+            }
+            var response = JsonConvert.DeserializeObject<TagResponse>(await ExecuteAsync(queryString.ToString()), serializerSettings);
+            if (response != null && response.Data != null)
+            {
+                return response.Data;
+            }
+            return null;
+        }
+
         public XmlDocument GetRSSFeed()
         {
             var request = rssFeedEndpoint + "?" + authTokenParam;
@@ -387,8 +464,30 @@ namespace ButterCMS
             var contentFields = await ExecuteAsync(queryString);
             return contentFields;
         }
-        
+
         private string Execute(string queryString)
+        {
+            var remainingTries = maxRequestTries;
+            var exceptions = new List<Exception>();
+
+            do
+            {
+                --remainingTries;
+                try
+                {
+                    return ExecuteSingle(queryString);
+                }
+                catch (Exception e)
+                {
+                    exceptions.Add(e);
+                }
+            }
+            while (remainingTries > 0);
+
+            throw aggregateExceptions(exceptions);
+        }
+
+        private string ExecuteSingle(string queryString)
         {
             try
             {
@@ -403,7 +502,7 @@ namespace ButterCMS
                 }
                 if (response.StatusCode >= System.Net.HttpStatusCode.InternalServerError)
                 {
-                    throw new Exception("There is a problem with the ButterCMS service");
+                    throw new Exception(generalExMsg);
                 }
             }
             catch (TaskCanceledException taskException)
@@ -427,6 +526,28 @@ namespace ButterCMS
 
         private async Task<string> ExecuteAsync(string queryString)
         {
+            var remainingTries = maxRequestTries;
+            var exceptions = new List<Exception>();
+
+            do
+            {
+                --remainingTries;
+                try
+                {
+                    return await ExecuteSingleAsync(queryString);
+                }
+                catch (Exception e)
+                {
+                    exceptions.Add(e);
+                }
+            }
+            while (remainingTries > 0);
+
+            throw aggregateExceptions(exceptions);
+        }
+
+        private async Task<string> ExecuteSingleAsync(string queryString)
+        {
             try
             {
                 var response = await httpClient.GetAsync(queryString);
@@ -440,7 +561,7 @@ namespace ButterCMS
                 }
                 if (response.StatusCode >= System.Net.HttpStatusCode.InternalServerError)
                 {
-                    throw new Exception("There is a problem with the ButterCMS service");
+                    throw new Exception(generalExMsg);
                 }
             }
             catch (TaskCanceledException taskException)
@@ -461,5 +582,55 @@ namespace ButterCMS
             }
             return string.Empty;
         }
+
+        private Exception aggregateExceptions(List<Exception> exceptions)
+        {
+            // If we somehow managed to fail all the requests without getting any exceptions,
+            // return a general exception. This shouldn't be possible.
+            if (!exceptions.Any())
+                return new Exception(generalExMsg);
+            
+            var uniqueExceptions = exceptions.Distinct(new ExceptionEqualityComparer());
+
+            // If all the requests failed with the same exception (should be the case most of the time), 
+            // just return one exception to represent them all.
+            if (uniqueExceptions.Count() == 1)
+                return uniqueExceptions.First();
+
+            // If all the requests failed but for different reasons, return an AggregateException 
+            // with all the root-cause exceptions.
+            return new AggregateException(generalExMsg, uniqueExceptions);
+        }
+
+        /// <summary>
+        /// Used to aggregate exceptions that occur on request retries. 
+        /// </summary>
+        /// <remarks>
+        /// In most cases, the same exception will occur multiple times, 
+        /// but we don't want to return multiple copies of it. This class is used 
+        /// to find exceptions that are duplicates by type and message so we can
+        /// only return one of them.
+        /// </remarks>
+        private class ExceptionEqualityComparer : IEqualityComparer<Exception>
+        {
+            public bool Equals(Exception e1, Exception e2)
+            {
+                if (e2 == null && e1 == null)
+                    return true;
+                else if (e1 == null | e2 == null)
+                    return false;
+                else if (e1.GetType().Name.Equals(e2.GetType().Name) && e1.Message.Equals(e2.Message))
+                    return true;
+                else
+                    return false;
+            }
+
+            public int GetHashCode(Exception e)
+            {
+                return (e.GetType().Name + e.Message).GetHashCode();
+            }
+        }
+
     }
+
 }
