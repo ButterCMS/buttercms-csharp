@@ -34,7 +34,9 @@ Each Butter client method has a synchronous version and an asynchronous version.
 * [Categories](#categories)
 * [Feeds](#feeds)
 * [Content Fields](#content-fields)
+* [Pages](#pages)
 * [Class Definitions](#class-definitions)
+* [Exceptions](#exceptions)
 
 ## Posts
 
@@ -128,7 +130,7 @@ Author tylerAndPosts = await butterClient.RetrieveAuthorAsync(authorSlug: "tyler
 
 ```
 ## Categories
-###List Categories
+### List Categories
 Listing Categories returns IEnumerable&lt;[Category](#category-class)&gt;
 
 #### ListCategories() Parameters
@@ -200,20 +202,96 @@ Retrieve a fully generated sitemap for your blog.
 
 ## Content Fields
 
-As demonstrated in the [Content Fields documentation](https://buttercms.com/docs/content/), any number of user-defined content fields can be retrieved from the API. Expanding on the examples in the docs, https://api.buttercms.com/v2/content/?keys=homepage_headline,team_members&auth_token=321478403e868f0fc41f0115731f330ff720ce0b returns an object that won't fit neatly in one C# object. For this reason, the client forwards the JSON string response and leaves deserialization up to the caller.
+**New in version 1.3.0**
+
+By the power of .NET generics, Content Fields can now be deserialized by the libary! The former method that would defer deserialization is still available to ease transition.
 
 #### RetrieveContentFields() Parameters:
 | Parameter|Description|
 | ---|---|
 |keys|String array of desired keys|
+|parameterDictionary(optional)|Dictionary of additional parameters, such as "locale" or "test"|
+
+#### RetrieveContentFields() Exceptions:
+| Exception|Description|
+| ---|---|
+|[ContentFieldObjectMismatchException](#contentfieldobjectmismatchexception)|This exception will be thrown when the library can't fit the returned data into the passed object class. |
 
 #### Examples:
 ```C#
 var keys = new string[2] { "team_members[name=Elon]", "homepage_headline" };
-var contentFields = await butterClient.RetrieveContentFieldsJSONAsync(keys);
+var dict = new Dictionary&lt;string, string&gt;()
+            {
+                { "locale", "de" },
+                { "test", "1" }
+            };
+var teamMembersAndHeadline = butterClient.RetrieveContentFields<TeamMembersHeadline>(keys, dict);
 
 ```
 
+**Legacy documentation** :
+
+As demonstrated in the [Content Fields documentation](https://buttercms.com/docs/api/#content-fields), any number of user-defined content fields can be retrieved from the API. Expanding on the examples in the docs, https://api.buttercms.com/v2/content/?keys=homepage_headline,team_members&auth_token=321478403e868f0fc41f0115731f330ff720ce0b returns an object that won't fit neatly in one C# object. For this reason, the client forwards the JSON string response and leaves deserialization up to the caller.
+
+#### RetrieveContentFieldsJSON() Parameters:
+| Parameter|Description|
+| ---|---|
+|keys|String array of desired keys|
+|parameterDictionary(optional)|Dictionary of additional parameters, such as "locale" and "test"|
+
+#### Examples:
+```C#
+var keys = new string[2] { "team_members[name=Elon]", "homepage_headline" };
+var dict = new Dictionary&lt;string, string&gt;()
+            {
+                { "locale", "de" },
+                { "test", "1" }
+            };
+var contentFields = await butterClient.RetrieveContentFieldsJSONAsync(keys, dict);
+
+```
+
+## Pages
+### List Pages
+
+Listing Pages returns a [PagesResponse](#pagesresponse-class) object
+
+#### ListPages() Parameters:
+| Parameter|Description|
+| ---|---|
+|pageType| Desired page type|
+|parameterDictionary| Dictionary of additional parameters|
+
+#### ListPages() Exceptions:
+| Exception|Description|
+| ---|---|
+|[PagesObjectMismatchException](#pagesobjectmismatchexception)|This exception will be thrown when the library can't fit the returned data into the passed object class. |
+
+#### Examples:
+```C#
+PagesResponse<ProductPage> productPages = butterClient.ListPages<ProductPage>("products");
+
+```
+### Retrieve a Single Page
+Retrieving a single page returns a [Page&gt;T&lt;](page-class) object
+
+#### RetrievePage() Parameters:
+| Parameter|Description|
+| ---|---|
+|pageType| Desired page type|
+|pageSlug| Slug of the desired page|
+|parameterDictionary| Dictionary of additional parameters|
+
+#### RetrievePage() Exceptions:
+| Exception|Description|
+| ---|---|
+|[PagesObjectMismatchException](#pagesobjectmismatchexception)|This exception will be thrown when the library can't fit the returned data into the passed object class. |
+
+#### Examples:
+```C#
+Page<ProductPage> saleOfTheDayPage = butterClient.RetrievePage<ProductPage>("products", "saleoftheday");
+
+```
 
 ## Class Definitions
 
@@ -296,3 +374,33 @@ var contentFields = await butterClient.RetrieveContentFieldsJSONAsync(keys);
 |Name| string|
 |Slug| string|
 |RecentPosts| IEnumerable&lt;[Post](#post-class)&gt;|
+
+### PagesResponse Class:
+| Property | Type|
+|----|---|
+|Meta| [PageMeta](#pagemeta-class)|
+|Data| IEnumerable&lt;[Page](#page-class)&lt;T&gt;&gt;|
+
+### PageMeta Class:
+| Property | Type|
+|----|---|
+|Count| int|
+|PreviousPage| int?|
+|NextPage| int?|
+
+### Page Class:
+| Property | Type|
+|----|---|
+|Slug| string|
+|T| Fields|
+
+## Exceptions
+
+### InvalidKeyException
+The library throws this exception when the Butter API key used to instatiate the client was not valid. 
+
+### ContentFieldObjectMismatchException
+This exception will be thrown when the library can't fit the returned data from a Content Field request into the passed object class.
+
+### PagesObjectMismatchException
+This exception will be thrown when the library can't fit the returned data from a Pages request into the passed object class.
