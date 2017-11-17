@@ -392,7 +392,7 @@ Page<ProductPage> saleOfTheDayPage = butterClient.RetrievePage<ProductPage>("pro
 | Property | Type|
 |----|---|
 |Slug| string|
-|T| Fields|
+|Fields|T|
 
 ## Exceptions
 
