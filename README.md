@@ -229,7 +229,7 @@ var teamMembersAndHeadline = butterClient.RetrieveContentFields<TeamMembersHeadl
 
 ```
 
-**Legacy documentation** :
+**Legacy Content Fields JSON documentation** :
 
 As demonstrated in the [Content Fields documentation](https://buttercms.com/docs/api/#content-fields), any number of user-defined content fields can be retrieved from the API. Expanding on the examples in the docs, https://api.buttercms.com/v2/content/?keys=homepage_headline,team_members&auth_token=321478403e868f0fc41f0115731f330ff720ce0b returns an object that won't fit neatly in one C# object. For this reason, the client forwards the JSON string response and leaves deserialization up to the caller.
 
@@ -273,7 +273,7 @@ PagesResponse<ProductPage> productPages = butterClient.ListPages<ProductPage>("p
 
 ```
 ### Retrieve a Single Page
-Retrieving a single page returns a [Page&gt;T&lt;](page-class) object
+Retrieving a single page returns a [Page&lt;T&gt;](#page-class) object
 
 #### RetrievePage() Parameters:
 | Parameter|Description|
