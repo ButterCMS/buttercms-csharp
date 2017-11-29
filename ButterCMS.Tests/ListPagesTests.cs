@@ -1,5 +1,6 @@
 ﻿using ButterCMS.Tests.Models;
 using NUnit.Framework;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Threading.Tasks;
 namespace ButterCMS.Tests
@@ -18,7 +19,11 @@ namespace ButterCMS.Tests
         [Test]
         public void ListPages_ShouldReturnPages()
         {
-            var response = butterClient.ListPages<things>("things");
+            var dict = new Dictionary<string, string>()
+            {
+                {"fields.thing1", "1"},
+            };
+            var response = butterClient.ListPages<things>("things", dict);
             Assert.IsNotNull(response);
         }
 

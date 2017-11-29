@@ -204,7 +204,7 @@ Retrieve a fully generated sitemap for your blog.
 
 **New in version 1.3.0**
 
-By the power of .NET generics, Content Fields can now be deserialized by the libary! The former method that would defer deserialization is still available to ease transition.
+By the power of .NET generics, Content Fields can now be deserialized by the library! The former method that would defer deserialization is still available to ease transition.
 
 #### RetrieveContentFields() Parameters:
 | Parameter|Description|
@@ -220,7 +220,7 @@ By the power of .NET generics, Content Fields can now be deserialized by the lib
 #### Examples:
 ```C#
 var keys = new string[2] { "team_members[name=Elon]", "homepage_headline" };
-var dict = new Dictionary&lt;string, string&gt;()
+var dict = new Dictionary<string, string>()
             {
                 { "locale", "de" },
                 { "test", "1" }
@@ -229,7 +229,7 @@ var teamMembersAndHeadline = butterClient.RetrieveContentFields<TeamMembersHeadl
 
 ```
 
-**Legacy Content Fields JSON documentation** :
+** Content Fields JSON documentation** :
 
 As demonstrated in the [Content Fields documentation](https://buttercms.com/docs/api/#content-fields), any number of user-defined content fields can be retrieved from the API. Expanding on the examples in the docs, https://api.buttercms.com/v2/content/?keys=homepage_headline,team_members&auth_token=321478403e868f0fc41f0115731f330ff720ce0b returns an object that won't fit neatly in one C# object. For this reason, the client forwards the JSON string response and leaves deserialization up to the caller.
 
@@ -254,7 +254,7 @@ var contentFields = await butterClient.RetrieveContentFieldsJSONAsync(keys, dict
 ## Pages
 ### List Pages
 
-Listing Pages returns a [PagesResponse](#pagesresponse-class) object
+Listing Pages returns a [PagesResponse](#pagesresponse-class) object. Full API documentation can be found at https://buttercms.com/docs/api/#list-pages-for-a-page-type.
 
 #### ListPages() Parameters:
 | Parameter|Description|
@@ -269,7 +269,19 @@ Listing Pages returns a [PagesResponse](#pagesresponse-class) object
 
 #### Examples:
 ```C#
-PagesResponse<ProductPage> productPages = butterClient.ListPages<ProductPage>("products");
+PagesResponse<YourPage> productPages = butterClient.ListPages<YourPage>("products");
+
+var paramterDict = new Dictionary<string, string>() 
+{
+    {"preview", "1"},
+    {"field.category", "appetizers"},
+    {"field.main_ingredient", "cheese"},
+    {"order", "-date_published"},
+    {"page", "7"},
+    {"page_size", "10"}
+};
+
+PagesResponse<ExamplePage> recipePages = await butterClient.ListPagesAsync<ExamplePage>("recipes", parameterDict);
 
 ```
 ### Retrieve a Single Page
@@ -290,6 +302,12 @@ Retrieving a single page returns a [Page&lt;T&gt;](#page-class) object
 #### Examples:
 ```C#
 Page<ProductPage> saleOfTheDayPage = butterClient.RetrievePage<ProductPage>("products", "saleoftheday");
+
+var paramterDict = new Dictionary<string, string>() 
+{
+    {"preview", "1"},
+};
+Page<ExamplePage> stuffedArtichokesPage = await butterClient.RetrievePageAsync<ExamplePage>("recipes", "stuffed-artichokes", paramterDict);
 
 ```
 
