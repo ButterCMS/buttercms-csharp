@@ -231,7 +231,7 @@ var teamMembersAndHeadline = butterClient.RetrieveContentFields<TeamMembersHeadl
 
 ** Content Fields JSON documentation** :
 
-As demonstrated in the [Content Fields documentation](https://buttercms.com/docs/api/#content-fields), any number of user-defined content fields can be retrieved from the API. Expanding on the examples in the docs, https://api.buttercms.com/v2/content/?keys=homepage_headline,team_members&auth_token=321478403e868f0fc41f0115731f330ff720ce0b returns an object that won't fit neatly in one C# object. For this reason, the client forwards the JSON string response and leaves deserialization up to the caller.
+As demonstrated in the [Content Fields documentation](https://buttercms.com/docs/api/#content-fields), any number of user-defined content fields can be retrieved from the API, these can get complicated in C# and you may choose to handle the response yourself. The RetrieveContentFieldsJSON() method will return the raw JSON response from the Butter API.
 
 #### RetrieveContentFieldsJSON() Parameters:
 | Parameter|Description|
