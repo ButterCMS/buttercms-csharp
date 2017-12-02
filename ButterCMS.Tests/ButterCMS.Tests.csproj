@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ButterCMS.Tests</RootNamespace>
     <AssemblyName>ButterCMS.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -65,12 +65,16 @@
     <Compile Include="AtomFeedTests.cs" />
     <Compile Include="ListAuthorsTests.cs" />
     <Compile Include="ListCategoriesTests.cs" />
+    <Compile Include="ListPagesTests.cs" />
     <Compile Include="ListPostsTests.cs" />
     <Compile Include="ListTagsTests.cs" />
+    <Compile Include="Models\TeamMembersHeadline.cs" />
+    <Compile Include="Models\things.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RetrieveAuthorTests.cs" />
     <Compile Include="RetrieveCategoryTests.cs" />
     <Compile Include="RetrieveContentFieldsTests.cs" />
+    <Compile Include="RetrievePageTests.cs" />
     <Compile Include="RetrievePostTests.cs" />
     <Compile Include="RssFeedTests.cs" />
     <Compile Include="SearchPostsTests.cs" />

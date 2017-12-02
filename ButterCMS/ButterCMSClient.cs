@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -35,6 +36,8 @@ namespace ButterCMS
         private const string atomEndpoint = "v2/feeds/atom/";
         private const string siteMapEndpoint = "v2/feeds/sitemap/";
         private const string contentEndpoint = "v2/content/";
+        private const string listPagesEndpoint = "v2/pages/{0}/";
+        private const string retrievePageEndpoint = "v2/pages/{0}/{1}/";
         private const int defaultPageSize = 10;
         private string authTokenParam
         {
@@ -53,6 +56,7 @@ namespace ButterCMS
                 Timeout = timeOut ?? defaultTimeout,
                 BaseAddress = new Uri(apiBaseAddress)
             };
+            httpClient.DefaultRequestHeaders.Add("X-Butter-Client", ".NET/" + Assembly.GetExecutingAssembly().GetName().Version.ToString());
             this.maxRequestTries = maxRequestTries;
             this.authToken = authToken;
 
@@ -449,20 +453,208 @@ namespace ButterCMS
             }
         }
 
-        public string RetrieveContentFieldsJSON(string[] keys)
+        public string RetrieveContentFieldsJSON(string[] keys, Dictionary<string, string> parameterDictionary = null)
         {
             var keysQueryString = string.Join(",", keys);
-            var queryString = string.Format("{0}?{1}&keys={2}", contentEndpoint, authTokenParam, keysQueryString);
-            var contentFields = Execute(queryString);
+            var queryString = new StringBuilder();
+            queryString.Append(string.Format("{0}?{1}&keys={2}", contentEndpoint, authTokenParam, keysQueryString));
+            if (parameterDictionary != null && parameterDictionary.Count > 0)
+            {
+                foreach (var parameterPair in parameterDictionary)
+                {
+                    queryString.Append("&");
+                    queryString.Append(parameterPair.Key);
+                    queryString.Append("=");
+                    queryString.Append(parameterPair.Value);
+                }
+            }
+            var contentFields = Execute(queryString.ToString());
             return contentFields;
         }
 
-        public async Task<string> RetrieveContentFieldsJSONAsync(string[] keys)
+        public async Task<string> RetrieveContentFieldsJSONAsync(string[] keys, Dictionary<string, string> parameterDictionary = null)
         {
             var keysQueryString = string.Join(",", keys);
-            var queryString = string.Format("{0}?{1}&keys={2}", contentEndpoint, authTokenParam, keysQueryString);
-            var contentFields = await ExecuteAsync(queryString);
+            var queryString = new StringBuilder();
+            queryString.Append(string.Format("{0}?{1}&keys={2}", contentEndpoint, authTokenParam, keysQueryString));
+            if (parameterDictionary != null && parameterDictionary.Count > 0)
+            {
+                foreach (var parameterPair in parameterDictionary)
+                {
+                    queryString.Append("&");
+                    queryString.Append(parameterPair.Key);
+                    queryString.Append("=");
+                    queryString.Append(parameterPair.Value);
+                }
+            }
+            var contentFields = await ExecuteAsync(queryString.ToString());
             return contentFields;
+        }
+
+        public T RetrieveContentFields<T>(string[] keys, Dictionary<string, string> parameterDictionary = null) where T : class
+        {
+            var keysQueryString = string.Join(",", keys);
+            var queryString = new StringBuilder();
+            queryString.Append(string.Format("{0}?{1}&keys={2}", contentEndpoint, authTokenParam, keysQueryString));
+            if (parameterDictionary != null && parameterDictionary.Count > 0)
+            {
+                foreach (var parameterPair in parameterDictionary)
+                {
+                    queryString.Append("&");
+                    queryString.Append(parameterPair.Key);
+                    queryString.Append("=");
+                    queryString.Append(parameterPair.Value);
+                }
+            }
+            var contentFieldsJSON = Execute(queryString.ToString());
+            try
+            {
+                var contentFields = JsonConvert.DeserializeObject<ContentResponse<T>>(contentFieldsJSON);
+                return contentFields.Data;
+            }
+            catch
+            {
+                throw new ContentFieldObjectMismatchException(string.Format("The Butter library was unable to deserialize the response object to the given object. Response from server: {0}", contentFieldsJSON));
+            }
+        }
+
+        public async Task<T> RetrieveContentFieldsAsync<T>(string[] keys, Dictionary<string, string> parameterDictionary = null) where T : class
+        {
+            var keysQueryString = string.Join(",", keys);
+            var queryString = new StringBuilder();
+            queryString.Append(string.Format("{0}?{1}&keys={2}", contentEndpoint, authTokenParam, keysQueryString));
+            if (parameterDictionary != null && parameterDictionary.Count > 0)
+            {
+                foreach (var parameterPair in parameterDictionary)
+                {
+                    queryString.Append("&");
+                    queryString.Append(parameterPair.Key);
+                    queryString.Append("=");
+                    queryString.Append(parameterPair.Value);
+                }
+            }
+            var contentFieldsJSON = await ExecuteAsync(queryString.ToString());
+            try
+            {
+                var contentFields = JsonConvert.DeserializeObject<ContentResponse<T>>(contentFieldsJSON);
+                return contentFields.Data;
+            }
+            catch
+            {
+                throw new ContentFieldObjectMismatchException(string.Format("The Butter library was unable to deserialize the response object to the given object. Response from server: {0}", contentFieldsJSON));
+            }
+        }
+
+        public PagesResponse<T> ListPages<T>(string pageType, Dictionary<string, string> parameterDictionary = null) where T : class
+        {
+            var queryString = new StringBuilder();
+            queryString.Append(string.Format(listPagesEndpoint, pageType));
+            queryString.Append("?");
+            queryString.Append(authTokenParam);
+            if (parameterDictionary != null && parameterDictionary.Count > 0)
+            {
+                foreach (var parameterPair in parameterDictionary)
+                {
+                    queryString.Append("&");
+                    queryString.Append(parameterPair.Key);
+                    queryString.Append("=");
+                    queryString.Append(parameterPair.Value);
+                }
+            }
+            var listPagesJSON = Execute(queryString.ToString());
+            try
+            {
+                var response = JsonConvert.DeserializeObject<PagesResponse<T>>(listPagesJSON);
+                return response;
+            }
+            catch
+            {
+                throw new PagesObjectMismatchException(string.Format("The Butter library was unable to deserialize the response object to the given object. Response from server: {0}", listPagesJSON));
+            }
+            
+        }
+        public async Task<PagesResponse<T>> ListPagesAsync<T>(string pageType, Dictionary<string, string> parameterDictionary = null) where T : class
+        {
+            var queryString = new StringBuilder();
+            queryString.Append(string.Format(listPagesEndpoint, pageType));
+            queryString.Append("?");
+            queryString.Append(authTokenParam);
+            if (parameterDictionary != null && parameterDictionary.Count > 0)
+            {
+                foreach (var parameterPair in parameterDictionary)
+                {
+                    queryString.Append("&");
+                    queryString.Append(parameterPair.Key);
+                    queryString.Append("=");
+                    queryString.Append(parameterPair.Value);
+                }
+            }
+            var listPagesJSON = await ExecuteAsync(queryString.ToString());
+            try
+            {
+                var response = JsonConvert.DeserializeObject<PagesResponse<T>>(listPagesJSON);
+                return response;
+            }
+            catch
+            {
+                throw new PagesObjectMismatchException(string.Format("The Butter library was unable to deserialize the response object to the given object. Response from server: {0}", listPagesJSON));
+            }
+        }
+
+        public Page<T> RetrievePage<T>(string pageType, string pageSlug, Dictionary<string, string> parameterDictionary = null) where T : class
+        {
+            var queryString = new StringBuilder();
+            queryString.Append(string.Format(retrievePageEndpoint, pageType, pageSlug));
+            queryString.Append("?");
+            queryString.Append(authTokenParam);
+            if (parameterDictionary != null && parameterDictionary.Count > 0)
+            {
+                foreach (var parameterPair in parameterDictionary)
+                {
+                    queryString.Append("&");
+                    queryString.Append(parameterPair.Key);
+                    queryString.Append("=");
+                    queryString.Append(parameterPair.Value);
+                }
+            }
+            var retrievePageJSON = Execute(queryString.ToString());
+            try
+            {
+                var response = JsonConvert.DeserializeObject<Page<T>>(retrievePageJSON);
+                return response;
+            }
+            catch
+            {
+                throw new PagesObjectMismatchException(string.Format("The Butter library was unable to deserialize the response object to the given object. Response from server: {0}", retrievePageJSON));
+            }
+        }
+
+        public async Task<Page<T>> RetrievePageAsync<T>(string pageType, string pageSlug, Dictionary<string, string> parameterDictionary = null) where T : class
+        {
+            var queryString = new StringBuilder();
+            queryString.Append(string.Format(retrievePageEndpoint, pageType, pageSlug));
+            queryString.Append("?");
+            queryString.Append(authTokenParam);
+            if (parameterDictionary != null && parameterDictionary.Count > 0)
+            {
+                foreach (var parameterPair in parameterDictionary)
+                {
+                    queryString.Append("&");
+                    queryString.Append(parameterPair.Key);
+                    queryString.Append("=");
+                    queryString.Append(parameterPair.Value);
+                }
+            }
+            var retrievePageJSON = await ExecuteAsync(queryString.ToString());
+            try
+            {
+                var response = JsonConvert.DeserializeObject<Page<T>>(retrievePageJSON);
+                return response;
+            }
+            catch
+            {
+                throw new PagesObjectMismatchException(string.Format("The Butter library was unable to deserialize the response object to the given object. Response from server: {0}", retrievePageJSON));
+            }
         }
 
         private string Execute(string queryString)
