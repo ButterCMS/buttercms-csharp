@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,7 +13,7 @@ namespace ButterCMS.Tests
         [OneTimeSetUp]
         public void SetUp()
         {
-            butterClient = new ButterCMSClient(ConfigurationManager.AppSettings["ButterAuthToken"]);
+            butterClient = Common.SetUpButterClient();
         }
 
         [Test]

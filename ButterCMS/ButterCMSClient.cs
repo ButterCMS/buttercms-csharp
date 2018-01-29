@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
+
 namespace ButterCMS
 {
     public class ButterCMSClient
@@ -50,13 +51,15 @@ namespace ButterCMS
 
         public ButterCMSClient(string authToken, TimeSpan? timeOut = null, int maxRequestTries = 3)
         {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+#if NET45
+            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+#endif
             httpClient = new HttpClient
             {
                 Timeout = timeOut ?? defaultTimeout,
                 BaseAddress = new Uri(apiBaseAddress)
             };
-            httpClient.DefaultRequestHeaders.Add("X-Butter-Client", ".NET/" + Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            httpClient.DefaultRequestHeaders.Add("X-Butter-Client", ".NET/" + typeof(ButterCMSClient).GetTypeInfo().Assembly.GetName().Version.ToString());
             this.maxRequestTries = maxRequestTries;
             this.authToken = authToken;
 

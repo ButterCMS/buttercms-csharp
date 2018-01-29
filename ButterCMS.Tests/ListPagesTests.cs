@@ -1,8 +1,8 @@
 ﻿using ButterCMS.Tests.Models;
 using NUnit.Framework;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Threading.Tasks;
+
 namespace ButterCMS.Tests
 {
     [TestFixture]
@@ -13,7 +13,7 @@ namespace ButterCMS.Tests
         [OneTimeSetUp]
         public void SetUp()
         {
-            butterClient = new ButterCMSClient(ConfigurationManager.AppSettings["ButterAuthToken"]);
+            butterClient = Common.SetUpButterClient();
         }
 
         [Test]

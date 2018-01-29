@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using System.Configuration;
 using System.Threading.Tasks;
 
 namespace ButterCMS.Tests
@@ -8,11 +7,10 @@ namespace ButterCMS.Tests
     public class SearchPostsTests
     {
         private ButterCMSClient butterClient;
-
         [OneTimeSetUp]
         public void SetUp()
         {
-            butterClient = new ButterCMSClient(ConfigurationManager.AppSettings["ButterAuthToken"]);
+            butterClient = Common.SetUpButterClient();
         }
 
         [Test]
