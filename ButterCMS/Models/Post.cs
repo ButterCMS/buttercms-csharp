@@ -10,6 +10,7 @@ namespace ButterCMS.Models
         public DateTime? Published { get; set; }
         public Author Author { get; set; }
         public IEnumerable<Category> Categories { get; set; }
+        public IEnumerable<Tag> Tags { get; set; }
         public string FeaturedImage { get; set; }
         public string Slug { get; set; }
         public string Title { get; set; }
