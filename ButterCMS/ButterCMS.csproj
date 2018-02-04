@@ -4,8 +4,8 @@
     <OldToolsVersion>2.0</OldToolsVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <Version>1.3.1</Version>
-    <FileVersion>1.3.1</FileVersion>
+    <Version>1.3.2</Version>
+    <FileVersion>1.3.2</FileVersion>
     <Authors>Brandon Nicoll; ButterCMS</Authors>
     <Description>API Client for ButterCMS; including both synchronous and asynchronous API endpoint methods.</Description>
     <Copyright>Copyright (c) 2018 ButterCMS</Copyright>
@@ -20,12 +20,12 @@
   </PropertyGroup>
   <PropertyGroup>
     <PackageId>ButterCMS</PackageId>
-    <PackageVersion>1.3.1</PackageVersion>
+    <PackageVersion>1.3.2</PackageVersion>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags>ButterCMS CMS</PackageTags>
     <PackageLicenseUrl>https://github.com/buttercms/buttercms-csharp/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/buttercms/buttercms-csharp/</PackageProjectUrl>
     <PackageIconUrl>https://avatars0.githubusercontent.com/u/16144259</PackageIconUrl>
-    <PackageReleaseNotes>Project updated to expand .NET Framework compatibility.</PackageReleaseNotes>
+    <PackageReleaseNotes>Adding Tags to Posts</PackageReleaseNotes>
   </PropertyGroup>
 </Project>
