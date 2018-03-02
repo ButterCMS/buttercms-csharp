@@ -604,7 +604,7 @@ namespace ButterCMS
             }
         }
 
-        public Page<T> RetrievePage<T>(string pageType, string pageSlug, Dictionary<string, string> parameterDictionary = null) where T : class
+        public PageResponse<T> RetrievePage<T>(string pageType, string pageSlug, Dictionary<string, string> parameterDictionary = null) where T : class
         {
             var queryString = new StringBuilder();
             queryString.Append(string.Format(retrievePageEndpoint, pageType, pageSlug));
@@ -623,7 +623,7 @@ namespace ButterCMS
             var retrievePageJSON = Execute(queryString.ToString());
             try
             {
-                var response = JsonConvert.DeserializeObject<Page<T>>(retrievePageJSON);
+                var response = JsonConvert.DeserializeObject<PageResponse<T>>(retrievePageJSON);
                 return response;
             }
             catch
@@ -632,7 +632,7 @@ namespace ButterCMS
             }
         }
 
-        public async Task<Page<T>> RetrievePageAsync<T>(string pageType, string pageSlug, Dictionary<string, string> parameterDictionary = null) where T : class
+        public async Task<PageResponse<T>> RetrievePageAsync<T>(string pageType, string pageSlug, Dictionary<string, string> parameterDictionary = null) where T : class
         {
             var queryString = new StringBuilder();
             queryString.Append(string.Format(retrievePageEndpoint, pageType, pageSlug));
@@ -651,7 +651,7 @@ namespace ButterCMS
             var retrievePageJSON = await ExecuteAsync(queryString.ToString());
             try
             {
-                var response = JsonConvert.DeserializeObject<Page<T>>(retrievePageJSON);
+                var response = JsonConvert.DeserializeObject<PageResponse<T>>(retrievePageJSON);
                 return response;
             }
             catch

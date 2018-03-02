@@ -16,32 +16,31 @@ namespace ButterCMS.Tests
         }
 
         [Test]
-        public void ListPage_ShouldReturnPage()
+        public void RetrievePage_ShouldReturnPage()
         {
             var response = butterClient.RetrievePage<things>("things", "thingsthingsthings");
-            Assert.IsNotNull(response);
+            Assert.IsNotNull(response.Data.Fields.thing1);
         }
 
         [Test]
-        public async Task ListPageAsync_ShouldReturnPage()
+        public async Task RetrievePageAsync_ShouldReturnPage()
         {
             var response = await butterClient.RetrievePageAsync<things>("things", "thingsthingsthings");
             Assert.IsNotNull(response);
         }
 
         [Test]
-        public void ListPage_NoResults_ShouldReturnNull()
+        public void RetrievePage_NoResults_ShouldReturnNull()
         {
             var response = butterClient.RetrievePage<things>("nothings", "nothings");
             Assert.IsNull(response);
         }
 
         [Test]
-        public async Task ListPageAsync_NoResults_ShouldReturnNull()
+        public async Task RetrievePageAsync_NoResults_ShouldReturnNull()
         {
             var response = await butterClient.RetrievePageAsync<things>("nothings", "nothings");
             Assert.IsNull(response);
         }
-
     }
 }

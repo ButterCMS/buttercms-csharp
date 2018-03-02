@@ -285,7 +285,7 @@ PagesResponse<ExamplePage> recipePages = await butterClient.ListPagesAsync<Examp
 
 ```
 ### Retrieve a Single Page
-Retrieving a single page returns a [Page&lt;T&gt;](#page-class) object
+Retrieving a single page returns a [PageResponse&lt;T&gt;](#page-response-class) object
 
 #### RetrievePage() Parameters:
 | Parameter|Description|
@@ -301,13 +301,13 @@ Retrieving a single page returns a [Page&lt;T&gt;](#page-class) object
 
 #### Examples:
 ```C#
-Page<ProductPage> saleOfTheDayPage = butterClient.RetrievePage<ProductPage>("products", "saleoftheday");
+PageResponse<ProductPage> saleOfTheDayPage = butterClient.RetrievePage<ProductPage>("products", "saleoftheday");
 
 var paramterDict = new Dictionary<string, string>() 
 {
     {"preview", "1"},
 };
-Page<ExamplePage> stuffedArtichokesPage = await butterClient.RetrievePageAsync<ExamplePage>("recipes", "stuffed-artichokes", paramterDict);
+PageResponse<ExamplePage> stuffedArtichokesPage = await butterClient.RetrievePageAsync<ExamplePage>("recipes", "stuffed-artichokes", paramterDict);
 
 ```
 
@@ -405,6 +405,11 @@ Page<ExamplePage> stuffedArtichokesPage = await butterClient.RetrievePageAsync<E
 |Count| int|
 |PreviousPage| int?|
 |NextPage| int?|
+
+### PageResponse Class:
+| Property | Type|
+|----|---|
+|Data| [Page](#page-class)&lt;T&gt;|
 
 ### Page Class:
 | Property | Type|
