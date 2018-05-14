@@ -51,7 +51,7 @@ namespace ButterCMS
 
         public ButterCMSClient(string authToken, TimeSpan? timeOut = null, int maxRequestTries = 3)
         {
-#if NET45
+#if (NET45 || NET451 || NET452 || NET46 || NET461 || NET462)
             System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 #endif
             httpClient = new HttpClient
