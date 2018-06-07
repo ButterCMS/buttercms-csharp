@@ -15,19 +15,35 @@ To install ButterCMS, run the following command in the [Package Manager Console]
 PM> Install-Package ButterCMS
 ```
 
+The library can also be installed to the project via .NET CLI
+
+```bash
+dotnet add package ButterCMS
+```
+
+Or by adding the package manually to the project file
+
+```xml
+<ItemGroup>
+<PackageReference Include="ButterCMS" Version="1.3.4" />
+</ItemGroup>
+```
+
 ## Usage
-Getting started with the Butter API is easy! Simply instantiate the ButterCMSClient with your API key. You can optionally provide a custom [TimeSpan](https://msdn.microsoft.com/en-us/library/system.timespan%28v=vs.110%29.aspx) timeout value; the default is 10 seconds. 
+
+To get started with the Butter API, instantiate the ButterCMSClient with the API key found in the [Butter Admin Settings](https://buttercms.com/settings/). An optional timeout parameter can be passed as a [TimeSpan](https://msdn.microsoft.com/en-us/library/system.timespan%28v=vs.110%29.aspx); the default is 10 seconds.
 
 ```C#
 using ButterCMS;
 ...
-var butterClient = new ButterCMSClient("YOUR KEY");
+var butterClient = new ButterCMSClient("API KEY");
 ```
-If you will be making many Butter API calls, it is recommended to store and re-use the client object. 
+
+If the application will be making many Butter API calls, it is recommended to store and re-use the client object.
 
 Each Butter client method has a synchronous version and an asynchronous version. Asynchronous methods are appended with the word "Async".
 
-## Jump to:
+## Sections
 
 * [Posts](#posts)
 * [Authors](#authors)
@@ -40,11 +56,12 @@ Each Butter client method has a synchronous version and an asynchronous version.
 
 ## Posts
 
-
 ### List Posts
+
 Listing posts returns a [PostsResponse](#postsresponse-class) object. This object consists of a [metadata](#postsmeta-class) object and IEnumerable&lt;[Post](#post-class)&gt;
 
-#### ListPosts() Parameters:
+#### ListPosts() Parameters
+
 | Parameter|Default|Description|
 | ---|---|---|
 | page(optional) | 1 | Used to paginate through older posts. |
@@ -53,7 +70,8 @@ Listing posts returns a [PostsResponse](#postsresponse-class) object. This objec
 |authorSlug(optional) | |Filter posts by an author’s slug.|
 |categorySlug(optional) | | Filter posts by a category’s slug.
 
-#### Examples:
+#### Examples
+
 ```C#
 PostsResponse posts = butterClient.ListPosts();
 
@@ -61,14 +79,17 @@ PostsResponse filteredPosts = await butterClient.ListPostsAsync(page: 2, pageSiz
 ```
 
 ### Retrieving a Single Post
+
 Retrieving a single Post will return a PostResponse object. This object consists of a single [Post](#post-class) and Post [Metadata](#postmeta-class). Post Metadata offers hints about the Previous and Next posts.
 
-#### RetrievePost() Parameters:
+#### RetrievePost() Parameters
+
 | Parameter|Description|
 | ---|---|
 | slug|The slug of the post to be retrieved.|
 
-#### Examples:
+#### Examples
+
 ```C#
 PostResponse controversialPost = butterClient.RetrievePost("tabs-vs-spaces-throwdown");
 
@@ -77,16 +98,19 @@ PostResponse safePost = await butterClient.RetrievePostAsync("puppies-and-kitten
 ```
 
 ### Searching Posts
+
 Searching posts will return the same object as listing posts, [PostsResponse](#postsresponse-class)
 
-#### SearchPosts() Parameters:
+#### SearchPosts() Parameters
+
 | Parameter|Default|Description|
 | ---|---|---|
 | query |  | Search query |
 | page(optional) | 1 | Used to paginate through older posts. |
 | pageSize(optional) | 10 |  Used to set the number of blog posts shown per page. |
 
-#### Examples:
+#### Examples
+
 ```C#
 PostsResponse posts = butterClient.SearchPosts("spaceships");
 
@@ -100,12 +124,14 @@ PostsResponse caffeinePosts = await butterClient.SearchPostsAsync(query: "coffee
 
 Listing Authors returns IEnumerable&lt;[Author](#author-class)&gt;
 
-#### ListAuthors() Parameters:
+#### ListAuthors() Parameters
+
 | Parameter|Description|
 | ---|---|
 | includeRecentPosts(optional)|If true, will return the author's recent posts in the response|
 
-#### Examples:
+#### Examples
+
 ```C#
 IEnumerable<Author> authors = butterClient.ListAuthors();
 
@@ -114,31 +140,39 @@ IEnumerable<Author> authorsWithPosts = await butterClient.ListAuthorsAsync(inclu
 ```
 
 ### Retrieve a Single Author
+
 Retrieving an author returns an [Author](#author-class) object
 
-#### RetrieveAuthor() Parameters:
+#### RetrieveAuthor() Parameters
+
 | Parameter|Description|
 | ---|---|
 |authorSlug|The slug of the author to be retrieved.|
 | includeRecentPosts(optional)|If true, will return the author's recent posts in the response|
 
-#### Examples:
+#### Examples
+
 ```C#
 Author sally = butterClient.RetrieveAuthor("sally");
 
 Author tylerAndPosts = await butterClient.RetrieveAuthorAsync(authorSlug: "tyler", includeRecentPosts: true);
 
 ```
+
 ## Categories
+
 ### List Categories
+
 Listing Categories returns IEnumerable&lt;[Category](#category-class)&gt;
 
 #### ListCategories() Parameters
+
 | Parameter|Description|
 | ---|---|
 | includeRecentPosts(optional)|If true, will return recent posts along with categories|
 
-#### Examples:
+#### Examples
+
 ```C#
 IEnumerable<Category> categories = butterClient.ListCategories();
 
@@ -146,56 +180,66 @@ IEnumerable<Category> categoriesWithPosts = await butterClient.ListCategoriesAsy
 
 ```
 
-
 ### Retrieve a Single Category
+
 Retrieving a single category returns [Category](#category-class)
 
-#### RetrieveCategory() Parameters:
+#### RetrieveCategory() Parameters
+
 | Parameter|Description|
 | ---|---|
 |categorySlug|The slug of the category to be retrieved.|
 | includeRecentPosts(optional)|If true, will return recent posts along with category|
 
-#### Examples:
+#### Examples
+
 ```C#
  Category dotnetCategory = butterClient.RetrieveCategory("dotnet");
- 
+
  Category fsharpCategoryWithPosts = await butterClient.RetrieveCategoryAsync(categorySlug: "fsharp", includeRecentPosts: true);
 
 ```
+
 ## Feeds
+
 Each of the feeds methods returns an [XmlDocument](https://msdn.microsoft.com/en-us/library/system.xml.xmldocument%28v=vs.110%29.aspx).
 
 
 ### RSS Feed
+
 Retrieve a fully generated RSS feed for your blog.
 
-#### Examples:
+#### Examples
+
 ```C#
  XmlDocument rssFeed = butterClient.GetRSSFeed();
- 
+
  XmlDocument rssFeed = await butterClient.GetRSSFeedAsync();
 
 ```
 
 ### Atom Feed
+
 Retrieve a fully generated Atom feed for your blog.
 
-#### Examples:
+#### Examples
+
 ```C#
  XmlDocument atomFeed = butterClient.GetAtomFeed();
- 
+
  XmlDocument atomFeed = await butterClient.GetAtomFeedAsync();
 
 ```
 
 ### Sitemap
+
 Retrieve a fully generated sitemap for your blog.
 
-#### Examples:
+#### Examples
+
 ```C#
  XmlDocument siteMap = butterClient.GetSitemap();
- 
+
  XmlDocument siteMap = await butterClient.GetSitemapAsync();
 
 ```
@@ -206,18 +250,21 @@ Retrieve a fully generated sitemap for your blog.
 
 By the power of .NET generics, Content Fields can now be deserialized by the library! The former method that would defer deserialization is still available to ease transition.
 
-#### RetrieveContentFields() Parameters:
+#### RetrieveContentFields() Parameters
+
 | Parameter|Description|
 | ---|---|
 |keys|String array of desired keys|
 |parameterDictionary(optional)|Dictionary of additional parameters, such as "locale" or "test"|
 
 #### RetrieveContentFields() Exceptions:
+
 | Exception|Description|
 | ---|---|
 |[ContentFieldObjectMismatchException](#contentfieldobjectmismatchexception)|This exception will be thrown when the library can't fit the returned data into the passed object class. |
 
-#### Examples:
+#### Examples
+
 ```C#
 var keys = new string[2] { "team_members[name=Elon]", "homepage_headline" };
 var dict = new Dictionary<string, string>()
@@ -233,13 +280,15 @@ var teamMembersAndHeadline = butterClient.RetrieveContentFields<TeamMembersHeadl
 
 As demonstrated in the [Content Fields documentation](https://buttercms.com/docs/api/#content-fields), any number of user-defined content fields can be retrieved from the API, these can get complicated in C# and you may choose to handle the response yourself. The RetrieveContentFieldsJSON() method will return the raw JSON response from the Butter API.
 
-#### RetrieveContentFieldsJSON() Parameters:
+#### RetrieveContentFieldsJSON() Parameters
+
 | Parameter|Description|
 | ---|---|
 |keys|String array of desired keys|
 |parameterDictionary(optional)|Dictionary of additional parameters, such as "locale" and "test"|
 
-#### Examples:
+#### Examples
+
 ```C#
 var keys = new string[2] { "team_members[name=Elon]", "homepage_headline" };
 var dict = new Dictionary&lt;string, string&gt;()
@@ -252,42 +301,32 @@ var contentFields = await butterClient.RetrieveContentFieldsJSONAsync(keys, dict
 ```
 
 ## Pages
+
+[ButterCMS Pages](https://buttercms.com/blog/page-types-cms-powered-pages-for-any-tech-stack) can be retrieved by first defining the custom Page Type as a class. These custom Page Types are defined in the [Butter admin](https://buttercms.com/pages/).
+
 ### List Pages
 
-Listing Pages returns a [PagesResponse](#pagesresponse-class) object. Full API documentation can be found at https://buttercms.com/docs/api/#list-pages-for-a-page-type.
+Listing Pages returns a [PagesResponse&lt;T&gt;](#pagesresponse-class) object. Full API documentation can be found at [https://buttercms.com/docs/api/#list-pages-for-a-page-type](https://buttercms.com/docs/api/#list-pages-for-a-page-type).
 
-#### ListPages() Parameters:
+#### ListPages() Parameters
+
 | Parameter|Description|
 | ---|---|
 |pageType| Desired page type|
-|parameterDictionary| Dictionary of additional parameters|
+|parameterDictionary| Dictionary of additional parameters. These options are described in greater detail in the [full API documentation](https://buttercms.com/docs/api/#get-multiple-pages-(page-type)). |
 
-#### ListPages() Exceptions:
+#### ListPages() Exceptions
+
 | Exception|Description|
 | ---|---|
 |[PagesObjectMismatchException](#pagesobjectmismatchexception)|This exception will be thrown when the library can't fit the returned data into the passed object class. |
 
-#### Examples:
-```C#
-PagesResponse<YourPage> productPages = butterClient.ListPages<YourPage>("products");
-
-var paramterDict = new Dictionary<string, string>() 
-{
-    {"preview", "1"},
-    {"field.category", "appetizers"},
-    {"field.main_ingredient", "cheese"},
-    {"order", "-date_published"},
-    {"page", "7"},
-    {"page_size", "10"}
-};
-
-PagesResponse<ExamplePage> recipePages = await butterClient.ListPagesAsync<ExamplePage>("recipes", parameterDict);
-
-```
 ### Retrieve a Single Page
+
 Retrieving a single page returns a [PageResponse&lt;T&gt;](#page-response-class) object
 
-#### RetrievePage() Parameters:
+#### RetrievePage() Parameters
+
 | Parameter|Description|
 | ---|---|
 |pageType| Desired page type|
@@ -299,34 +338,140 @@ Retrieving a single page returns a [PageResponse&lt;T&gt;](#page-response-class)
 | ---|---|
 |[PagesObjectMismatchException](#pagesobjectmismatchexception)|This exception will be thrown when the library can't fit the returned data into the passed object class. |
 
-#### Examples:
-```C#
-PageResponse<ProductPage> saleOfTheDayPage = butterClient.RetrievePage<ProductPage>("products", "saleoftheday");
+#### Examples
 
-var paramterDict = new Dictionary<string, string>() 
+##### Controller and ViewModel examples
+
+```C#
+
+public namespace HungryDevApp
 {
-    {"preview", "1"},
-};
-PageResponse<ExamplePage> stuffedArtichokesPage = await butterClient.RetrievePageAsync<ExamplePage>("recipes", "stuffed-artichokes", paramterDict);
+    public class RecipesController : Controller
+    {
+        [Route(recipes/)]
+        public virtual ActionResult Index(int page = 1, int pageSize = 10)
+        {
+            var butterClient = new ButterCMSClient("API KEY");
+
+            var parameterDict = new Dictionary<string, string>()
+            {
+                {"order", "-date_published"},
+                {"page", page.ToString()},
+                {"page_size", pageSize.ToString()}
+            };
+
+            PagesResponse<RecipePage> recipePages = butterClient.ListPages<RecipePage>("recipes", parameterDict);
+
+            var viewModel = new RecipeViewModel();
+            viewModel.PreviousPageNumber = recipePages.Meta.PreviousPage;
+            viewModel.NextPageNumber = recipePages.Meta.NextPage;
+            viewModel.PagesCount = recipePages.Meta.Count;
+            viewModel.RecipePages = recipePages.Data;
+
+            return View(viewModel);
+        }
+
+        [Route(recipe/{slug})]
+        public virtual ActionResult Recipe(string slug)
+        {
+            var butterClient = new ButterCMSClient("API KEY");
+
+            PageResponse<RecipePage> recipe = butterClient.RetrievePage<RecipePage>("recipe", slug);
+
+            var viewModel =  recipe.Data.Fields;
+
+            return View(viewModel);
+        }
+    }
+
+    public class RecipesViewModel
+    {
+        public List<Page<RecipePage>> RecipePages { get; set; }
+        public int? PreviousPageNumber { get; set; }
+        public int? NextPageNumber { get; set; }
+        public int PagesCount { get; set; }
+    }
+
+    public class RecipePage
+    {
+        public string Category { get; set; }
+        public string RecipeName { get; set; }
+        public string MainIngredient { get; set; }
+        public int EstimatedCookingTimeInMinutes { get; set; }
+        public string IngredientList { get; set; }
+        public string Instructions { get; set; }
+    }
+}
+
+
+```
+
+##### Example View usage for ListPages
+
+```HTML
+@using HungryDevApp
+@{
+Layout = "~/Views/Shared/Layouts/_Layout.cshtml";
+}
+@model RecipeViewModel
+<div>
+    <a href="/recipes/?page=@{Model.PreviousPageNumber}&pageSize=10">Previous page</a>
+    <a href="/recipes/?page=@{Model.NextPageNumber}&pageSize=10">Next page</a>
+</div>
+<div>
+    <p>@{Model.PagesCount} recipes total</p>
+</div>
+<div>
+    <ul>
+        @foreach(var page in Model.RecipePages)
+        {
+            <li>
+                <a href="/recipe/@{page.Slug}">@{page.Fields.RecipeName}
+            </li>
+        }
+    </ul>
+</div>
+
+```
+
+##### Example View usage for RetrievePage
+
+```HTML
+@using HungryDevApp
+@{
+Layout = "~/Views/Shared/Layouts/_Layout.cshtml";
+}
+@model RecipePage
+<div>
+    <h2>@{Model.RecipeName}</h2>
+    <p>Estimated cooking time: @{Model.EstimatedCookingTimeInMinutes} minutes</p>
+    <h3>Ingredients:</h3>
+    <p>@{Model.IngredientList}</p>
+    <h3>Instructions:</h3>
+    <p>@{Model.Instructions}</p>
+</div>
 
 ```
 
 ## Class Definitions
 
-### PostsResponse Class:
+### PostsResponse Class
+
 | Property | Type|
 |----|---|
 |Meta| [PostsMeta](#postsmeta-class)|
 |Data| IEnumerable&lt;[Post](#post-class)&gt;|
 
-### PostsMeta Class:
+### PostsMeta Class
+
 | Property | Type|
 |----|---|
 |Count| int|
 |NextPage| int?|
 |PreviousPage| int?|
 
-### Post Class:
+### Post Class
+
 | Property | Type|
 |----|---|
 |Url|string|
@@ -343,33 +488,38 @@ PageResponse<ExamplePage> stuffedArtichokesPage = await butterClient.RetrievePag
 |MetaDescription|string|
 |Status|[PostStatusEnum](#poststatusenum)|
 
-### PostStatusEnum:
+### PostStatusEnum
+
 |Constant|Value|
 |---|---|
 |Unknown|0|
 |Draft|1|
 |Published|2|
 
-### PostResponse Class:
+### PostResponse Class
+
 | Property | Type|
 |----|---|
 |Meta|[PostMeta](#postmeta-class)|
 |Data|[Post](#post-class)|
 
-### PostMeta Class:
+### PostMeta Class
+
 | Property | Type|
 |----|---|
 |NextPost|[PostLight](#postlight-class)|
 |PreviousPost|[PostLight](#postlight-class)|
 
-### PostLight Class:
+### PostLight Class
+
 | Property | Type|
 |----|---|
 |Slug|string|
 |Title|string|
 |FeaturedImage|string|
 
-### Author Class:
+### Author Class
+
 | Property | Type|
 |----|---|
 |FirstName| string|
@@ -386,32 +536,37 @@ PageResponse<ExamplePage> stuffedArtichokesPage = await butterClient.RetrievePag
 |ProfileImage| string|
 |RecentPosts| IEnumerable&lt;[Post](#post-class)&gt;|
 
-### Category Class:
+### Category Class
+
 | Property | Type|
 |----|---|
 |Name| string|
 |Slug| string|
 |RecentPosts| IEnumerable&lt;[Post](#post-class)&gt;|
 
-### PagesResponse Class:
+### PagesResponse Class
+
 | Property | Type|
 |----|---|
 |Meta| [PageMeta](#pagemeta-class)|
 |Data| IEnumerable&lt;[Page](#page-class)&lt;T&gt;&gt;|
 
-### PageMeta Class:
+### PageMeta Class
+
 | Property | Type|
 |----|---|
 |Count| int|
 |PreviousPage| int?|
 |NextPage| int?|
 
-### PageResponse Class:
+### PageResponse Class
+
 | Property | Type|
 |----|---|
 |Data| [Page](#page-class)&lt;T&gt;|
 
-### Page Class:
+### Page Class
+
 | Property | Type|
 |----|---|
 |Slug| string|
@@ -420,10 +575,13 @@ PageResponse<ExamplePage> stuffedArtichokesPage = await butterClient.RetrievePag
 ## Exceptions
 
 ### InvalidKeyException
-The library throws this exception when the Butter API key used to instatiate the client was not valid. 
+
+The library throws this exception when the Butter API key used to instatiate the client was not valid.
 
 ### ContentFieldObjectMismatchException
+
 This exception will be thrown when the library can't fit the returned data from a Content Field request into the passed object class.
 
 ### PagesObjectMismatchException
+
 This exception will be thrown when the library can't fit the returned data from a Pages request into the passed object class.
