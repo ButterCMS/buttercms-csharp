@@ -348,28 +348,13 @@ public namespace HungryDevApp
 {
     public class RecipesController : Controller
     {
-        [Route(recipe/{slug})]
-        public virtual ActionResult Index(string slug)
-        {
-            var butterClient = new ButterCMSClient("API KEY");
-
-            PageResponse<ProductPage> recipe = butterClient.RetrievePage<ProductPage>("recipe", slug);
-
-            var viewModel =  recipe.Data.Fields;
-
-            return View(viewModel);
-        }
-
-        [Route(recipes/cheese/)]
-        public virtual ActionResult Cheese(int page = 1, int pageSize = 10)
+        [Route(recipes/)]
+        public virtual ActionResult Index(int page = 1, int pageSize = 10)
         {
             var butterClient = new ButterCMSClient("API KEY");
 
             var parameterDict = new Dictionary<string, string>()
             {
-                {"preview", "0"},
-                {"field.Category", "appetizers"},
-                {"field.MainIngredient", "cheese"},
                 {"order", "-date_published"},
                 {"page", page.ToString()},
                 {"page_size", pageSize.ToString()}
@@ -386,6 +371,17 @@ public namespace HungryDevApp
             return View(viewModel);
         }
 
+        [Route(recipe/{slug})]
+        public virtual ActionResult Recipe(string slug)
+        {
+            var butterClient = new ButterCMSClient("API KEY");
+
+            PageResponse<RecipePage> recipe = butterClient.RetrievePage<RecipePage>("recipe", slug);
+
+            var viewModel =  recipe.Data.Fields;
+
+            return View(viewModel);
+        }
     }
 
     public class RecipesViewModel
@@ -419,18 +415,18 @@ Layout = "~/Views/Shared/Layouts/_Layout.cshtml";
 }
 @model RecipeViewModel
 <div>
-    <a href="/recipes/cheese/?page=@{Model.PreviousPageNumber}&pageSize=10">Previous page</a>
-    <a href="/recipes/cheese/?page=@{Model.NextPageNumber}&pageSize=10">Next page</a>
+    <a href="/recipes/?page=@{Model.PreviousPageNumber}&pageSize=10">Previous page</a>
+    <a href="/recipes/?page=@{Model.NextPageNumber}&pageSize=10">Next page</a>
 </div>
 <div>
-    <p>@{Model.PagesCount} cheese recipes total</p>
+    <p>@{Model.PagesCount} recipes total</p>
 </div>
 <div>
     <ul>
-        @foreach(var cheesePage in Model.RecipePages)
+        @foreach(var page in Model.RecipePages)
         {
             <li>
-                <a href="/recipe/@{cheesePage.Slug}">@{cheesePage.Fields.RecipeName}
+                <a href="/recipe/@{page.Slug}">@{page.Fields.RecipeName}
             </li>
         }
     </ul>
