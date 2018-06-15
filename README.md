@@ -340,12 +340,26 @@ Retrieving a single page returns a [PageResponse&lt;T&gt;](#page-response-class)
 
 #### Examples
 
+##### Page Type Definition in the Butter Admin
+
+![alt text](/Examples/RecipePageType.png "Page Type Definition")
+
 ##### Controller and ViewModel examples
 
 ```C#
 
 public namespace HungryDevApp
 {
+    public class RecipePage
+    {
+        public string category { get; set; }
+        public string recipe_name { get; set; }
+        public string main_ingredient { get; set; }
+        public double estimated_cooking_time_in_minutes { get; set; }
+        public string ingredient_list { get; set; }
+        public string instructions { get; set; }
+    }
+
     public class RecipesController : Controller
     {
         [Route(recipes/)]
@@ -355,18 +369,30 @@ public namespace HungryDevApp
 
             var parameterDict = new Dictionary<string, string>()
             {
-                {"order", "-date_published"},
                 {"page", page.ToString()},
                 {"page_size", pageSize.ToString()}
             };
 
-            PagesResponse<RecipePage> recipePages = butterClient.ListPages<RecipePage>("recipes", parameterDict);
+            PagesResponse<RecipePage> recipePages = butterClient.ListPages<RecipePage>("recipe", parameterDict);
 
-            var viewModel = new RecipeViewModel();
+            var viewModel = new RecipesViewModel();
             viewModel.PreviousPageNumber = recipePages.Meta.PreviousPage;
             viewModel.NextPageNumber = recipePages.Meta.NextPage;
             viewModel.PagesCount = recipePages.Meta.Count;
-            viewModel.RecipePages = recipePages.Data;
+
+            viewModel.Recipes = new List<RecipeViewModel>();
+            foreach (Page<RecipePage> recipe in recipePages.Data)
+            {
+                RecipeViewModel recipeViewModel = new RecipeViewModel();
+                recipeViewModel.Category = recipe.Fields.category;
+                recipeViewModel.RecipeName = recipe.Fields.recipe_name;
+                recipeViewModel.MainIngredient = recipe.Fields.main_ingredient;
+                recipeViewModel.EstimatedCookingTimeInMinutes = recipe.Fields.estimated_cooking_time_in_minutes;
+                recipeViewModel.IngredientList = recipe.Fields.ingredient_list;
+                recipeViewModel.Instructions = recipe.Fields.instructions;
+
+                viewModel.Recipes.Add(recipeViewModel);
+            }
 
             return View(viewModel);
         }
@@ -378,7 +404,13 @@ public namespace HungryDevApp
 
             PageResponse<RecipePage> recipe = butterClient.RetrievePage<RecipePage>("recipe", slug);
 
-            var viewModel =  recipe.Data.Fields;
+            var viewModel = new RecipeViewModel();
+            viewModel.Category = recipe.Data.Fields.category;
+            viewModel.RecipeName = recipe.Data.Fields.recipe_name;
+            viewModel.MainIngredient = recipe.Data.Fields.main_ingredient;
+            viewModel.EstimatedCookingTimeInMinutes = recipe.Data.Fields.estimated_cooking_time_in_minutes;
+            viewModel.IngredientList = recipe.Data.Fields.ingredient_list;
+            viewModel.Instructions = recipe.Data.Fields.instructions;
 
             return View(viewModel);
         }
@@ -386,21 +418,22 @@ public namespace HungryDevApp
 
     public class RecipesViewModel
     {
-        public List<Page<RecipePage>> RecipePages { get; set; }
+        public List<RecipeViewModel> Recipes { get; set; }
         public int? PreviousPageNumber { get; set; }
         public int? NextPageNumber { get; set; }
         public int PagesCount { get; set; }
     }
 
-    public class RecipePage
+    public class RecipeViewModel
     {
         public string Category { get; set; }
         public string RecipeName { get; set; }
         public string MainIngredient { get; set; }
-        public int EstimatedCookingTimeInMinutes { get; set; }
+        public double EstimatedCookingTimeInMinutes { get; set; }
         public string IngredientList { get; set; }
         public string Instructions { get; set; }
     }
+    
 }
 
 
@@ -413,7 +446,7 @@ public namespace HungryDevApp
 @{
 Layout = "~/Views/Shared/Layouts/_Layout.cshtml";
 }
-@model RecipeViewModel
+@model RecipesViewModel
 <div>
     <a href="/recipes/?page=@{Model.PreviousPageNumber}&pageSize=10">Previous page</a>
     <a href="/recipes/?page=@{Model.NextPageNumber}&pageSize=10">Next page</a>
@@ -423,10 +456,10 @@ Layout = "~/Views/Shared/Layouts/_Layout.cshtml";
 </div>
 <div>
     <ul>
-        @foreach(var page in Model.RecipePages)
+        @foreach(var page in Model.Recipes)
         {
             <li>
-                <a href="/recipe/@{page.Slug}">@{page.Fields.RecipeName}
+                <a href="/recipe/@{page.Slug}">@{page.RecipeName}
             </li>
         }
     </ul>
@@ -441,7 +474,7 @@ Layout = "~/Views/Shared/Layouts/_Layout.cshtml";
 @{
 Layout = "~/Views/Shared/Layouts/_Layout.cshtml";
 }
-@model RecipePage
+@model RecipeViewModel
 <div>
     <h2>@{Model.RecipeName}</h2>
     <p>Estimated cooking time: @{Model.EstimatedCookingTimeInMinutes} minutes</p>
