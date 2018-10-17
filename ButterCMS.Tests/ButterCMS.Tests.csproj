@@ -10,7 +10,7 @@
       <PackageReference Include="NUnit3TestAdapter" Version="3.9.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ButterCMS\ButterCMS.csproj" />
+    <ProjectReference Include="..\ButterCMSLib\ButterCMS.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="appsettings.json">
