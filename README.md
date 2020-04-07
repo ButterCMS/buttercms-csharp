@@ -511,6 +511,7 @@ Layout = "~/Views/Shared/Layouts/_Layout.cshtml";
 |Author|[Author](#author-class)|
 |Categories|IEnumerable&lt;[Category](#category-class)&gt;
 |FeaturedImage| string|
+|FeaturedImageAlt| string|
 |Slug|string|
 |Title|string|
 |Body|string|

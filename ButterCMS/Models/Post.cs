@@ -12,6 +12,7 @@ namespace ButterCMS.Models
         public IEnumerable<Category> Categories { get; set; }
         public IEnumerable<Tag> Tags { get; set; }
         public string FeaturedImage { get; set; }
+        public string FeaturedImageAlt { get; set; }
         public string Slug { get; set; }
         public string Title { get; set; }
         public string Body { get; set; }
