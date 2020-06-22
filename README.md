@@ -49,7 +49,7 @@ Each Butter client method has a synchronous version and an asynchronous version.
 * [Authors](#authors)
 * [Categories](#categories)
 * [Feeds](#feeds)
-* [Content Fields](#content-fields)
+* [Collections](#collections)
 * [Pages](#pages)
 * [Class Definitions](#class-definitions)
 * [Exceptions](#exceptions)
@@ -244,17 +244,17 @@ Retrieve a fully generated sitemap for your blog.
 
 ```
 
-## Content Fields
+## Collections
 
 **New in version 1.3.0**
 
-By the power of .NET generics, Content Fields can now be deserialized by the library! The former method that would defer deserialization is still available to ease transition.
+By the power of .NET generics, Collections can now be deserialized by the library! The former method that would defer deserialization is still available to ease transition.
 
 #### RetrieveContentFields() Parameters
 
 | Parameter|Description|
 | ---|---|
-|keys|String array of desired keys|
+|key|String array of the Collection key|
 |parameterDictionary(optional)|Dictionary of additional parameters, such as "locale" or "test"|
 
 #### RetrieveContentFields() Exceptions:
@@ -266,37 +266,35 @@ By the power of .NET generics, Content Fields can now be deserialized by the lib
 #### Examples
 
 ```C#
-var keys = new string[2] { "team_members[name=Elon]", "homepage_headline" };
+var key = new string[1] { "collection_key" };
 var dict = new Dictionary<string, string>()
             {
-                { "locale", "de" },
-                { "test", "1" }
+                { "locale", "de" }
             };
-var teamMembersAndHeadline = butterClient.RetrieveContentFields<TeamMembersHeadline>(keys, dict);
+var teamMembersAndHeadline = butterClient.RetrieveContentFields<TeamMembersHeadline>(key, dict);
 
 ```
 
-** Content Fields JSON documentation** :
+** Collection JSON documentation** :
 
-As demonstrated in the [Content Fields documentation](https://buttercms.com/docs/api/#content-fields), any number of user-defined content fields can be retrieved from the API, these can get complicated in C# and you may choose to handle the response yourself. The RetrieveContentFieldsJSON() method will return the raw JSON response from the Butter API.
+As demonstrated in the [Collection documentation](https://buttercms.com/docs/api/?csharp#collections), any number of user-defined Collections can be retrieved from the API, these can get complicated in C# and you may choose to handle the response yourself. The RetrieveContentFieldsJSON() method will return the raw JSON response from the Butter API.
 
 #### RetrieveContentFieldsJSON() Parameters
 
 | Parameter|Description|
 | ---|---|
-|keys|String array of desired keys|
-|parameterDictionary(optional)|Dictionary of additional parameters, such as "locale" and "test"|
+|key|String array of the Collection key|
+|parameterDictionary(optional)|Dictionary of additional parameters, such as "locale" or "test"|
 
 #### Examples
 
 ```C#
-var keys = new string[2] { "team_members[name=Elon]", "homepage_headline" };
-var dict = new Dictionary&lt;string, string&gt;()
+var key = new string[1] { "collection_key" };
+var dict = new Dictionary<string, string>()
             {
-                { "locale", "de" },
-                { "test", "1" }
+                { "locale", "de" }
             };
-var contentFields = await butterClient.RetrieveContentFieldsJSONAsync(keys, dict);
+var contentFields = await butterClient.RetrieveContentFieldsJSONAsync(key, dict);
 
 ```
 
@@ -513,6 +511,7 @@ Layout = "~/Views/Shared/Layouts/_Layout.cshtml";
 |Author|[Author](#author-class)|
 |Categories|IEnumerable&lt;[Category](#category-class)&gt;
 |FeaturedImage| string|
+|FeaturedImageAlt| string|
 |Slug|string|
 |Title|string|
 |Body|string|
