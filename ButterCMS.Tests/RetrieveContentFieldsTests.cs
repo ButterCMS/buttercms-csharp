@@ -7,11 +7,19 @@ namespace ButterCMS.Tests
     [TestFixture]
     public class RetrieveContentFieldsTests
     {
+
+        private ButterCMSClient butterClient;
+
+        [OneTimeSetUp]
+        public void SetUp()
+        {
+            butterClient = Common.SetUpButterClient();
+        }
+
         [Test]
         public void RetrieveContentFieldsJSON_ShouldReturnDictionaryString()
         {
-            var butterClient = new ButterCMSClient("321478403e868f0fc41f0115731f330ff720ce0b");
-            var keys = new string[2] {"team_members[name=Elon]", "homepage_headline"};
+            var keys = new string[] { "hotproducts" };
             var contentFields = butterClient.RetrieveContentFieldsJSON(keys);
             Assert.IsNotNull(contentFields);
         }
@@ -19,8 +27,7 @@ namespace ButterCMS.Tests
         [Test]
         public void RetrieveContentFieldsJSON_ShouldReturnEmptyString()
         {
-            var butterClient = new ButterCMSClient("321478403e868f0fc41f0115731f330ff720ce0b");
-            var keys = new string[1] { "NOTAREALKEY" };
+            var keys = new string[] { "NOTAREALKEY" };
             var actual = butterClient.RetrieveContentFieldsJSON(keys);
             var expected = string.Empty;
             Assert.AreEqual(expected, actual);
@@ -29,8 +36,7 @@ namespace ButterCMS.Tests
         [Test]
         public async Task RetrieveContentFieldsJSONAsync_ShouldReturnDictionaryString()
         {
-            var butterClient = new ButterCMSClient("321478403e868f0fc41f0115731f330ff720ce0b");
-            var keys = new string[2] { "team_members[name=Elon]", "homepage_headline" };
+            var keys = new string[] { "hotproducts" };
             var contentFields = await butterClient.RetrieveContentFieldsJSONAsync(keys);
             Assert.IsNotNull(contentFields);
         }
@@ -38,37 +44,33 @@ namespace ButterCMS.Tests
         [Test]
         public async Task RetrieveContentFieldsJSONAsync_ShouldReturnEmptyString()
         {
-            var butterClient = new ButterCMSClient("321478403e868f0fc41f0115731f330ff720ce0b");
-            var keys = new string[1] { "NOTAREALKEY" };
+            var keys = new string[] { "NOTAREALKEY" };
             var actual = await butterClient.RetrieveContentFieldsJSONAsync(keys);
             var expected = string.Empty;
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void RetrieveContentFields_ShouldReturnTeamMembersHeadline()
+        public void RetrieveContentFields_ShouldReturnHotProducts()
         {
-            var butterClient = new ButterCMSClient("321478403e868f0fc41f0115731f330ff720ce0b");
-            var keys = new string[2] { "team_members[name=Elon]", "homepage_headline" };
-            var teamMembersAndHeadline = butterClient.RetrieveContentFields<TeamMembersHeadline>(keys);
-            Assert.IsNotNull(teamMembersAndHeadline);
+            var keys = new string[] { "hotproducts" };
+            var hotProducts = butterClient.RetrieveContentFields<HotProductsResponse>(keys);
+            Assert.IsNotNull(hotProducts);
         }
 
         [Test]
-        public async Task RetrieveContentFieldsAsync_ShouldReturnTeamMembersHeadline()
+        public async Task RetrieveContentFieldsAsync_ShouldReturnHotProducts()
         {
-            var butterClient = new ButterCMSClient("321478403e868f0fc41f0115731f330ff720ce0b");
-            var keys = new string[2] { "team_members[name=Elon]", "homepage_headline" };
-            var teamMembersAndHeadline = await butterClient.RetrieveContentFieldsAsync<TeamMembersHeadline>(keys);
-            Assert.IsNotNull(teamMembersAndHeadline);
+            var keys = new string[] { "hotproducts" };
+            var hotProducts = await butterClient.RetrieveContentFieldsAsync<HotProductsResponse>(keys);
+            Assert.IsNotNull(hotProducts);
         }
 
         [Test]
-        
-        public void  RetrieveContentFields_ShouldThrowContentFieldObjectMismatchException()
+
+        public void RetrieveContentFields_ShouldThrowContentFieldObjectMismatchException()
         {
-            var butterClient = new ButterCMSClient("321478403e868f0fc41f0115731f330ff720ce0b");
-            var keys = new string[2] { "team_members[name=Elon]", "homepage_headline" };
+            var keys = new string[] { "hotproducts" };
             Assert.Throws<ContentFieldObjectMismatchException>(() => butterClient.RetrieveContentFields<string>(keys));
         }
     }
