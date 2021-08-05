@@ -602,6 +602,9 @@ Layout = "~/Views/Shared/Layouts/_Layout.cshtml";
 | Property | Type|
 |----|---|
 |Slug| string|
+|Updated| DateTime|
+|Published| DateTime?|
+|PageType| string|
 |Fields|T|
 
 ## Exceptions
