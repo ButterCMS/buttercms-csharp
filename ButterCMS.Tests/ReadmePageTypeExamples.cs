@@ -68,6 +68,8 @@ namespace ButterCMS.Tests
             viewModel.EstimatedCookingTimeInMinutes = recipe.Data.Fields.estimated_cooking_time_in_minutes;
             viewModel.IngredientList = recipe.Data.Fields.ingredient_list;
             viewModel.Instructions = recipe.Data.Fields.instructions;
+            viewModel.Updated = recipe.Data.Updated;
+            viewModel.Published = recipe.Data.Published;
 
             Assert.IsNotNull(viewModel);
         }

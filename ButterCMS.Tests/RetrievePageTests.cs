@@ -21,6 +21,7 @@ namespace ButterCMS.Tests
             var response = butterClient.RetrievePage<things>("things", "thingsthingsthings");
             Assert.IsNotNull(response.Data.Fields.thing1);
             Assert.IsNotNull(response.Data.PageType);
+            Assert.IsNotNull(response.Data.Updated);
         }
 
         [Test]

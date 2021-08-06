@@ -1,4 +1,6 @@
-﻿namespace ButterCMS.Tests.Models
+﻿using System;
+
+namespace ButterCMS.Tests.Models
 {
     public class RecipeViewModel
     {
@@ -8,5 +10,7 @@
         public double EstimatedCookingTimeInMinutes { get; set; }
         public string IngredientList { get; set; }
         public string Instructions { get; set; }
+        public DateTime Updated { get; set; }
+        public DateTime? Published { get; set; }
     }
 }
