@@ -20,7 +20,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <PackageId>ButterCMS</PackageId>
-    <PackageVersion>1.3.9</PackageVersion>
+    <PackageVersion>1.3.10</PackageVersion>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags>ButterCMS CMS</PackageTags>
     <PackageLicenseUrl>https://github.com/buttercms/buttercms-csharp/blob/master/LICENSE</PackageLicenseUrl>
