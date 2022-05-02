@@ -4,8 +4,8 @@
     <OldToolsVersion>2.0</OldToolsVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <Version>1.3.9</Version>
-    <FileVersion>1.3.9</FileVersion>
+    <Version>1.4.0</Version>
+    <FileVersion>1.4.0</FileVersion>
     <Authors>Brandon Nicoll; ButterCMS</Authors>
     <Description>API Client for ButterCMS; including both synchronous and asynchronous API endpoint methods.</Description>
     <Copyright>Copyright (c) 2020 ButterCMS</Copyright>
@@ -20,7 +20,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <PackageId>ButterCMS</PackageId>
-    <PackageVersion>1.3.10</PackageVersion>
+    <PackageVersion>1.4.0</PackageVersion>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags>ButterCMS CMS</PackageTags>
     <PackageLicenseUrl>https://github.com/buttercms/buttercms-csharp/blob/master/LICENSE</PackageLicenseUrl>
