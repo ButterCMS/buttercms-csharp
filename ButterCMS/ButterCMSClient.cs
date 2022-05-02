@@ -18,6 +18,7 @@ namespace ButterCMS
         private static readonly string generalExMsg = "There is a problem with the ButterCMS service";
 
         private string authToken;
+        private bool preview;
         private HttpClient httpClient;
         private TimeSpan defaultTimeout = new TimeSpan(0, 0, 10);
         private int maxRequestTries;
@@ -49,7 +50,7 @@ namespace ButterCMS
         }
         private JsonSerializerSettings serializerSettings;
 
-        public ButterCMSClient(string authToken, TimeSpan? timeOut = null, int maxRequestTries = 3, HttpMessageHandler httpMessageHandler = null)
+        public ButterCMSClient(string authToken, bool preview = false, TimeSpan? timeOut = null, int maxRequestTries = 3, HttpMessageHandler httpMessageHandler = null)
         {
 #if (NET45 || NET451 || NET452 || NET46 || NET461 || NET462)
             System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
@@ -62,6 +63,7 @@ namespace ButterCMS
             httpClient.DefaultRequestHeaders.Add("X-Butter-Client", ".NET/" + typeof(ButterCMSClient).GetTypeInfo().Assembly.GetName().Version.ToString());
             this.maxRequestTries = maxRequestTries;
             this.authToken = authToken;
+            this.preview = preview;
 
             serializerSettings = new JsonSerializerSettings();
             serializerSettings.ContractResolver = new SnakeCaseContractResolver();
@@ -660,8 +662,20 @@ namespace ButterCMS
             }
         }
 
+        private string AppendPreviewParams(string queryString)
+        {
+            if (this.preview)
+            {
+                return $"{queryString}&preview=1&test=1";
+            }
+
+            return queryString;
+        }
+
         private string Execute(string queryString)
         {
+            queryString = AppendPreviewParams(queryString);
+
             var remainingTries = maxRequestTries;
             var exceptions = new List<Exception>();
 
@@ -684,6 +698,8 @@ namespace ButterCMS
 
         private string ExecuteSingle(string queryString)
         {
+            queryString = AppendPreviewParams(queryString);
+
             try
             {
                 var response = httpClient.GetAsync(queryString).Result;
@@ -721,6 +737,8 @@ namespace ButterCMS
 
         private async Task<string> ExecuteAsync(string queryString)
         {
+            queryString = AppendPreviewParams(queryString);
+
             var remainingTries = maxRequestTries;
             var exceptions = new List<Exception>();
 
@@ -743,6 +761,8 @@ namespace ButterCMS
 
         private async Task<string> ExecuteSingleAsync(string queryString)
         {
+            queryString = AppendPreviewParams(queryString);
+
             try
             {
                 var response = await httpClient.GetAsync(queryString);
