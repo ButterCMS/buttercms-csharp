@@ -50,7 +50,7 @@ namespace ButterCMS
         }
         private JsonSerializerSettings serializerSettings;
 
-        public ButterCMSClient(string authToken, bool preview = false, TimeSpan? timeOut = null, int maxRequestTries = 3, HttpMessageHandler httpMessageHandler = null)
+        public ButterCMSClient(string authToken, TimeSpan? timeOut = null, int maxRequestTries = 3, HttpMessageHandler httpMessageHandler = null, bool preview = false)
         {
 #if (NET45 || NET451 || NET452 || NET46 || NET461 || NET462)
             System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
