@@ -55,7 +55,11 @@ namespace ButterCMS
 #if (NET45 || NET451 || NET452 || NET46 || NET461 || NET462)
             System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 #endif
-            httpClient = new HttpClient(httpMessageHandler ?? new HttpClientHandler())
+
+            httpClient = new HttpClient(httpMessageHandler ?? new HttpClientHandler
+            {
+                AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip
+            })
             {
                 Timeout = timeOut ?? defaultTimeout,
                 BaseAddress = new Uri(apiBaseAddress)
