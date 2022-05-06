@@ -670,7 +670,7 @@ namespace ButterCMS
         {
             if (this.preview)
             {
-                return $"{queryString}&preview=1&test=1";
+                return $"{queryString}&preview=1";
             }
 
             return queryString;

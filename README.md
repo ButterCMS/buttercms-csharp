@@ -52,7 +52,7 @@ using ButterCMS;
 ...
 bool previewMode = true;
 
-var butterClient = new ButterCMSClient("API KEY", previewMode);
+var butterClient = new ButterCMSClient("API KEY", null, 3, null, previewMode);
 ```
 
 ## Sections
@@ -267,7 +267,7 @@ By the power of .NET generics, Collections can now be deserialized by the librar
 | Parameter|Description|
 | ---|---|
 |key|String array of the Collection key|
-|parameterDictionary(optional)|Dictionary of additional parameters, such as "locale" or "test"|
+|parameterDictionary(optional)|Dictionary of additional parameters, such as "locale" or "preview"|
 
 #### RetrieveContentFields() Exceptions:
 
@@ -296,7 +296,7 @@ As demonstrated in the [Collection documentation](https://buttercms.com/docs/api
 | Parameter|Description|
 | ---|---|
 |key|String array of the Collection key|
-|parameterDictionary(optional)|Dictionary of additional parameters, such as "locale" or "test"|
+|parameterDictionary(optional)|Dictionary of additional parameters, such as "locale" or "preview"|
 
 #### Examples
 
