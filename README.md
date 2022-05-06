@@ -1,6 +1,6 @@
 # buttercms-csharp
 
-.NET Library for ButterCMS API. 
+.NET Library for ButterCMS API.
 
 ## Documentation
 
@@ -42,6 +42,18 @@ var butterClient = new ButterCMSClient("API KEY");
 If the application will be making many Butter API calls, it is recommended to store and re-use the client object.
 
 Each Butter client method has a synchronous version and an asynchronous version. Asynchronous methods are appended with the word "Async".
+
+### Preview mode
+
+Preview mode can be used to setup a staging website for previewing content fields or for testing content during local development. To fetch content from preview mode add an additional argument, `true`, to the package initialization:
+
+```C#
+using ButterCMS;
+...
+bool previewMode = true;
+
+var butterClient = new ButterCMSClient("API KEY", null, 3, null, previewMode);
+```
 
 ## Sections
 
@@ -255,7 +267,7 @@ By the power of .NET generics, Collections can now be deserialized by the librar
 | Parameter|Description|
 | ---|---|
 |key|String array of the Collection key|
-|parameterDictionary(optional)|Dictionary of additional parameters, such as "locale" or "test"|
+|parameterDictionary(optional)|Dictionary of additional parameters, such as "locale" or "preview"|
 
 #### RetrieveContentFields() Exceptions:
 
@@ -284,7 +296,7 @@ As demonstrated in the [Collection documentation](https://buttercms.com/docs/api
 | Parameter|Description|
 | ---|---|
 |key|String array of the Collection key|
-|parameterDictionary(optional)|Dictionary of additional parameters, such as "locale" or "test"|
+|parameterDictionary(optional)|Dictionary of additional parameters, such as "locale" or "preview"|
 
 #### Examples
 
@@ -431,7 +443,7 @@ public namespace HungryDevApp
         public string IngredientList { get; set; }
         public string Instructions { get; set; }
     }
-    
+
 }
 
 
