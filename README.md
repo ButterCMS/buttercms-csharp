@@ -1,6 +1,6 @@
 # buttercms-csharp
 
-.NET Library for ButterCMS API.
+.NET Standard (2.1) Library for ButterCMS API.
 
 ## Documentation
 

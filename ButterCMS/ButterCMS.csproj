@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
-    <TargetFrameworks>net45;net451;net452;net46;net461;net462;netstandard1.3;netstandard2.0;</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1</TargetFrameworks>
     <OldToolsVersion>2.0</OldToolsVersion>
   </PropertyGroup>
   <PropertyGroup>
@@ -10,10 +10,6 @@
     <Description>API Client for ButterCMS; including both synchronous and asynchronous API endpoint methods.</Description>
     <Copyright>Copyright (c) 2020 ButterCMS</Copyright>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
-    <PackageReference Include="System.Net.Http" Version="4.3.4" />
-  </ItemGroup>
   <PropertyGroup Condition="'$(TargetFramework)'=='net45'">
     <AssemblyTitle>Json.NET</AssemblyTitle>
     <DefineConstants>HAVE_COM_ATTRIBUTES;</DefineConstants>
@@ -28,4 +24,7 @@
     <PackageIconUrl>https://avatars0.githubusercontent.com/u/16144259</PackageIconUrl>
     <PackageReleaseNotes>Name is now included in pages</PackageReleaseNotes>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
 </Project>

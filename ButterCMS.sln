@@ -1,11 +1,11 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ButterCMS", "ButterCMS\ButterCMS.csproj", "{50FCE935-0E01-404B-87BE-0D075008EDCD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ButterCMS.Tests", "ButterCMS.Tests\ButterCMS.Tests.csproj", "{5ADAB9E1-1D98-4E71-8775-9CFF6D8895A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ButterCMS.Tests", "ButterCMS.Tests\ButterCMS.Tests.csproj", "{5ADAB9E1-1D98-4E71-8775-9CFF6D8895A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
