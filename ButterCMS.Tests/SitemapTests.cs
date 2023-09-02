@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 namespace ButterCMS.Tests
 {
     [TestFixture]
+    [Category("Sitemap")]
     public class SitemapTests
     {
         private ButterCMSClient butterClient;

@@ -6,6 +6,7 @@ namespace ButterCMS.Tests
 {
 
     [TestFixture]
+    [Category("ListCategories")]
     public class ListCategoriesTests
     {
         private ButterCMSClient butterClient;

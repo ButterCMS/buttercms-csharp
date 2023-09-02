@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 namespace ButterCMS.Tests
 {
     [TestFixture]
+    [Category("RetrieveContentFields")]
     public class RetrieveContentFieldsTests
     {
         [Test]

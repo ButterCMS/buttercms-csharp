@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 namespace ButterCMS.Tests
 {
     [TestFixture]
+    [Category("ListAuthors")]
     public class ListAuthorsTests
     {
         private ButterCMSClient butterClient;

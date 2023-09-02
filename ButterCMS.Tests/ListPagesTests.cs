@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 namespace ButterCMS.Tests
 {
     [TestFixture]
+    [Category("ListPages")]
     public class ListPagesTests
     {
         private ButterCMSClient butterClient;

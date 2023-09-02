@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 namespace ButterCMS.Tests
 {
     [TestFixture]
+    [Category("RssFeed")]
     public class RssFeedTests
     {
         private ButterCMSClient butterClient;

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 namespace ButterCMS.Tests
 {
     [TestFixture]
+    [Category("RetrieveCategory")]
     public class RetrieveCategoryTests
     {
         private ButterCMSClient butterClient;

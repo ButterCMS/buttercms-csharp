@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 namespace ButterCMS.Tests
 {
     [TestFixture]
+    [Category("RetrievePage")]
     public class RetrievePageTests
     {
         private ButterCMSClient butterClient;

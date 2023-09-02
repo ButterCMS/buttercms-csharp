@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 namespace ButterCMS.Tests
 {
     [TestFixture]
+    [Category("ListTags")]
     public class ListTagsTests
     {
 
