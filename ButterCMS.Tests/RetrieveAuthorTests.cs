@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ButterCMS.Tests
@@ -7,55 +8,87 @@ namespace ButterCMS.Tests
     [Category("RetrieveAuthor")]
     public class RetrieveAuthorTests
     {
-        private ButterCMSClient butterClient;
+        private ButterCMSClientWithMockedHttp butterClient;
 
-        [OneTimeSetUp]
+        [SetUp]
         public void SetUp()
         {
-            butterClient = Common.SetUpButterClient();
+            butterClient = Common.SetUpMockedButterClient();
         }
 
         [Test]
         public void RetrieveAuthor_ShouldReturnAuthorWithoutPosts()
         {
-            var response = butterClient.RetrieveAuthor("api-test");
-            Assert.IsNotNull(response);
+            butterClient.MockSuccessfullAuthorResponse(AuthorsMocks.Author.Slug);
+
+            var author = butterClient.RetrieveAuthor(AuthorsMocks.Author.Slug);
+            Assert.IsNotNull(author);
+
+            Assert.AreEqual(AuthorsMocks.Author.FirstName, author.FirstName);
+            Assert.AreEqual(AuthorsMocks.Author.LastName, author.LastName);
+            Assert.IsNull(author.RecentPosts);
         }
 
         [Test]
         public async Task RetrieveAuthorAsync_ShouldReturnAuthorWithoutPosts()
         {
-            var response = await butterClient.RetrieveAuthorAsync("api-test");
-            Assert.IsNotNull(response);
+            butterClient.MockSuccessfullAuthorResponse(AuthorsMocks.Author.Slug);
+
+            var author = await butterClient.RetrieveAuthorAsync(AuthorsMocks.Author.Slug);
+            Assert.IsNotNull(author);
+
+            Assert.AreEqual(AuthorsMocks.Author.FirstName, author.FirstName);
+            Assert.AreEqual(AuthorsMocks.Author.LastName, author.LastName);
+            Assert.IsNull(author.RecentPosts);
         }
 
         [Test]
         public void RetrieveAuthor_ShouldReturnAuthorsWithPosts()
         {
-            var response = butterClient.RetrieveAuthor(authorSlug: "api-test", includeRecentPosts: true);
-            Assert.IsNotNull(response);
-            Assert.IsNotEmpty(response.RecentPosts);
+            butterClient.MockSuccessfullAuthorResponseWithPosts(AuthorsMocks.AuthorWithPosts.Slug);
+
+            var author = butterClient.RetrieveAuthor(authorSlug: AuthorsMocks.Author.Slug, includeRecentPosts: true);
+            Assert.IsNotNull(author);
+
+            Assert.AreEqual(AuthorsMocks.Author.FirstName, author.FirstName);
+            Assert.AreEqual(AuthorsMocks.Author.LastName, author.LastName);
+
+            Assert.IsNotEmpty(author.RecentPosts);
+            Assert.AreEqual(AuthorsMocks.AuthorWithPosts.RecentPosts.First().Slug, author.RecentPosts.First().Slug);
         }
 
         [Test]
         public async Task RetrieveAuthorAsync_ShouldReturnAuthorsWithPosts()
         {
-            var response = await butterClient.RetrieveAuthorAsync(authorSlug: "api-test", includeRecentPosts: true);
-            Assert.IsNotNull(response);
-            Assert.IsNotEmpty(response.RecentPosts);
+            butterClient.MockSuccessfullAuthorResponseWithPosts(AuthorsMocks.AuthorWithPosts.Slug);
+
+            var author = await butterClient.RetrieveAuthorAsync(authorSlug: AuthorsMocks.Author.Slug, includeRecentPosts: true);
+            Assert.IsNotNull(author);
+
+            Assert.AreEqual(AuthorsMocks.Author.FirstName, author.FirstName);
+            Assert.AreEqual(AuthorsMocks.Author.LastName, author.LastName);
+
+            Assert.IsNotEmpty(author.RecentPosts);
+            Assert.AreEqual(AuthorsMocks.AuthorWithPosts.RecentPosts.First().Slug, author.RecentPosts.First().Slug);
         }
 
         [Test]
         public void RetrieveAuthor_ShouldReturnNull()
         {
-            var response = butterClient.RetrieveAuthor(authorSlug: "not-a-real-author");
+            var slug = "not-a-real-author";
+            butterClient.MockSuccessfullNullAuthorResponse(slug);
+
+            var response = butterClient.RetrieveAuthor(authorSlug: slug);
             Assert.IsNull(response);
         }
 
         [Test]
         public async Task RetrieveAuthorAsync_ShouldReturnNull()
         {
-            var response = await butterClient.RetrieveAuthorAsync(authorSlug: "not-a-real-author");
+            var slug = "not-a-real-author";
+            butterClient.MockSuccessfullNullAuthorResponse(slug);
+
+            var response = await butterClient.RetrieveAuthorAsync(authorSlug: slug);
             Assert.IsNull(response);
         }
     }
