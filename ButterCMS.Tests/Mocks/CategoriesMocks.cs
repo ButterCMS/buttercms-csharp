@@ -27,6 +27,16 @@ namespace ButterCMS.Tests
             Data = new[] { CategoryWithPosts },
         };
 
+        public static CategoryResponse CategoryResponse = new CategoryResponse()
+        {
+            Data = Category,
+        };
+
+        public static CategoryResponse CategoryResponseWithPosts = new CategoryResponse()
+        {
+            Data = CategoryWithPosts,
+        };
+
         public static void MockSuccessfullCategoriesResponse(this ButterCMSClientWithMockedHttp butterClient)
         {
             butterClient.MockSuccessfullJSONResponse($"https://api.buttercms.com/v2/categories/?auth_token={ButterCMSClientWithMockedHttp.MockedApiKey}", CategoriesResponse);
@@ -35,6 +45,21 @@ namespace ButterCMS.Tests
         public static void MockSuccessfullCategoriesResponseWithPosts(this ButterCMSClientWithMockedHttp butterClient)
         {
             butterClient.MockSuccessfullJSONResponse($"https://api.buttercms.com/v2/categories/?auth_token={ButterCMSClientWithMockedHttp.MockedApiKey}&include=recent_posts", CategoriesResponseWithPosts);
+        }
+
+        public static void MockSuccessfullCategoryResponse(this ButterCMSClientWithMockedHttp butterClient, string slug)
+        {
+            butterClient.MockSuccessfullJSONResponse($"https://api.buttercms.com/v2/categories/{slug}/?auth_token={ButterCMSClientWithMockedHttp.MockedApiKey}", CategoryResponse);
+        }
+
+        public static void MockSuccessfullCategoryResponseWithPosts(this ButterCMSClientWithMockedHttp butterClient, string slug)
+        {
+            butterClient.MockSuccessfullJSONResponse($"https://api.buttercms.com/v2/categories/{slug}/?auth_token={ButterCMSClientWithMockedHttp.MockedApiKey}&include=recent_posts", CategoryResponseWithPosts);
+        }
+
+        public static void MockSuccessfullNullCategoryResponse(this ButterCMSClientWithMockedHttp butterClient, string slug)
+        {
+            butterClient.MockSuccessfullJSONResponse($"https://api.buttercms.com/v2/categories/{slug}/?auth_token={ButterCMSClientWithMockedHttp.MockedApiKey}", new CategoryResponse());
         }
     }
 }

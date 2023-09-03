@@ -28,7 +28,7 @@ namespace ButterCMS.Tests
             var category = response.FirstOrDefault();
             Assert.AreEqual(CategoriesMocks.Category.Name, category.Name);
             Assert.AreEqual(CategoriesMocks.Category.Slug, category.Slug);
-            Assert.IsNull(response.FirstOrDefault().RecentPosts);
+            Assert.IsNull(category.RecentPosts);
         }
 
         [Test]
@@ -42,7 +42,7 @@ namespace ButterCMS.Tests
             var category = response.FirstOrDefault();
             Assert.AreEqual(CategoriesMocks.Category.Name, category.Name);
             Assert.AreEqual(CategoriesMocks.Category.Slug, category.Slug);
-            Assert.IsNull(response.FirstOrDefault().RecentPosts);
+            Assert.IsNull(category.RecentPosts);
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace ButterCMS.Tests
             var category = response.FirstOrDefault();
             Assert.AreEqual(CategoriesMocks.CategoryWithPosts.Name, category.Name);
             Assert.AreEqual(CategoriesMocks.CategoryWithPosts.Slug, category.Slug);
-            Assert.IsNotEmpty(response.FirstOrDefault().RecentPosts);
+            Assert.IsNotEmpty(category.RecentPosts);
             Assert.AreEqual(CategoriesMocks.CategoryWithPosts.RecentPosts.FirstOrDefault().Slug, category.RecentPosts.FirstOrDefault().Slug);
         }
 
@@ -71,7 +71,7 @@ namespace ButterCMS.Tests
             var category = response.FirstOrDefault();
             Assert.AreEqual(CategoriesMocks.CategoryWithPosts.Name, category.Name);
             Assert.AreEqual(CategoriesMocks.CategoryWithPosts.Slug, category.Slug);
-            Assert.IsNotEmpty(response.FirstOrDefault().RecentPosts);
+            Assert.IsNotEmpty(category.RecentPosts);
             Assert.AreEqual(CategoriesMocks.CategoryWithPosts.RecentPosts.FirstOrDefault().Slug, category.RecentPosts.FirstOrDefault().Slug);
         }
     }
