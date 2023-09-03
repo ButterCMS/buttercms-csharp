@@ -22,6 +22,8 @@ namespace ButterCMS.Tests
 
             var xml = butterClient.GetSitemap();
             Assert.IsNotNull(xml);
+
+            Assert.AreEqual("hello", xml.ChildNodes[1].Name);
         }
 
         [Test]
@@ -31,6 +33,8 @@ namespace ButterCMS.Tests
 
             var xml = await butterClient.GetSitemapAsync();
             Assert.IsNotNull(xml);
+
+            Assert.AreEqual("hello", xml.ChildNodes[1].Name);
         }
 
         [Test]
