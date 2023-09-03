@@ -9,46 +9,71 @@ namespace ButterCMS.Tests
     public class ListTagsTests
     {
 
-        private ButterCMSClient butterClient;
+        private ButterCMSClientWithMockedHttp butterClient;
 
-        [OneTimeSetUp]
+        [SetUp]
         public void SetUp()
         {
-            butterClient = Common.SetUpButterClient();
+            butterClient = Common.SetUpMockedButterClient();
         }
 
         [Test]
         public void ListTags_ShouldReturnListOfTagsWithoutPosts()
         {
+            butterClient.MockSuccessfullTagsResponse();
+
             var response = butterClient.ListTags();
             Assert.IsNotNull(response);
-            Assert.IsNull(response.FirstOrDefault().RecentPosts);
+
+            var tag = response.FirstOrDefault();
+            Assert.AreEqual(TagsMocks.Tag.Slug, tag.Slug);
+            Assert.AreEqual(TagsMocks.Tag.Name, tag.Name);
+            Assert.IsNull(tag.RecentPosts);
         }
 
         [Test]
         public async Task ListTagsAsync_ShouldReturnListOfTagsWithoutPosts()
         {
+            butterClient.MockSuccessfullTagsResponse();
+
             var response = await butterClient.ListTagsAsync();
             Assert.IsNotNull(response);
-            Assert.IsNull(response.FirstOrDefault().RecentPosts);
+
+            var tag = response.FirstOrDefault();
+            Assert.AreEqual(TagsMocks.Tag.Slug, tag.Slug);
+            Assert.AreEqual(TagsMocks.Tag.Name, tag.Name);
+            Assert.IsNull(tag.RecentPosts);
         }
 
         [Test]
         public void ListTags_ShouldReturnListOfTagsWithPosts()
         {
+            butterClient.MockSuccessfullTagsWithPostsResponse();
+
             var response = butterClient.ListTags(true);
             Assert.IsNotNull(response);
-            Assert.IsNotEmpty(response.FirstOrDefault().RecentPosts);
+
+            var tag = response.FirstOrDefault();
+            Assert.AreEqual(TagsMocks.Tag.Slug, tag.Slug);
+            Assert.AreEqual(TagsMocks.Tag.Name, tag.Name);
+            Assert.IsNotEmpty(tag.RecentPosts);
+
+            Assert.AreEqual(PostsMocks.Post.Slug, tag.RecentPosts.FirstOrDefault().Slug);
         }
 
         [Test]
         public async Task ListTagsAsync_ShouldReturnListOfTagsWithPosts()
         {
+            butterClient.MockSuccessfullTagsWithPostsResponse();
+
             var response = await butterClient.ListTagsAsync(true);
             Assert.IsNotNull(response);
-            Assert.IsNotEmpty(response.FirstOrDefault().RecentPosts);
+
+            var tag = response.FirstOrDefault();
+            Assert.AreEqual(TagsMocks.Tag.Slug, tag.Slug);
+            Assert.AreEqual(TagsMocks.Tag.Name, tag.Name);
+            Assert.IsNotEmpty(tag.RecentPosts);
+            Assert.AreEqual(PostsMocks.Post.Slug, tag.RecentPosts.FirstOrDefault().Slug);
         }
-
-
     }
 }
