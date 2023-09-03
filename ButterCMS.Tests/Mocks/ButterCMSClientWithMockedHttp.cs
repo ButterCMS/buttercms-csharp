@@ -9,15 +9,22 @@ namespace ButterCMS.Tests
 
         public readonly MockHttpMessageHandler mockHttpMessageHandler;
 
+        private readonly JsonSerializerSettings serializerSettings;
+
         public ButterCMSClientWithMockedHttp(MockHttpMessageHandler mockHttpMessageHandler) : base(MockedApiKey, httpMessageHandler: mockHttpMessageHandler)
         {
             this.mockHttpMessageHandler = mockHttpMessageHandler;
+
+            serializerSettings = new JsonSerializerSettings
+            {
+                ContractResolver = new SnakeCaseContractResolver()
+            };
         }
 
-        public void MockSuccessfullJSONResponse<T>(string url, T reponse) {
+        public void MockSuccessfullJSONResponse<T>(string url, T response) {
             mockHttpMessageHandler
-                .When(url)
-                .Respond("application/json", JsonConvert.SerializeObject(reponse));
+                .Expect(url)
+                .Respond("application/json", JsonConvert.SerializeObject(response, serializerSettings));
         }
     }
 }
