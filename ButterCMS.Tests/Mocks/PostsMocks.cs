@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using ButterCMS.Models;
 
 namespace ButterCMS.Tests
@@ -30,7 +31,7 @@ namespace ButterCMS.Tests
             }
         };
 
-        public static string AppendParamsToListPostsUrl(int? page = null, int? pageSize = null, bool? excludeBody = null, string authorSlug = null, string categorySlug = null, string tagSlug = null)
+        public static string AppendParamsToListPostsUrl(int? page = null, int? pageSize = null, bool? excludeBody = null, string authorSlug = null, string categorySlug = null, string tagSlug = null, string query = null)
         {
             var url = $"https://api.buttercms.com/v2/posts/?auth_token={ButterCMSClientWithMockedHttp.MockedApiKey}";
 
@@ -64,19 +65,58 @@ namespace ButterCMS.Tests
                 url += $"&tag_slug={tagSlug}";
             }
 
-            Console.WriteLine(url);
+            return url;
+        }
+
+        public static string AppendParamsToSearchPostsUrl(int? page = null, int? pageSize = null, string query = null)
+        {
+            var url = $"https://api.buttercms.com/v2/search/?auth_token={ButterCMSClientWithMockedHttp.MockedApiKey}";
+
+            if (!string.IsNullOrEmpty(query))
+            {
+                url += $"&query={WebUtility.UrlEncode(query)}";
+            }
+
+            if (page.HasValue && page.Value > 1)
+            {
+                url += $"&page={page.Value}";
+            }
+
+            if (pageSize.HasValue)
+            {
+                url += $"&page_size={pageSize.Value}";
+            }
 
             return url;
         }
 
-        public static void MockSuccessfullPostsResponse(this ButterCMSClientWithMockedHttp butterClient, int? page = null, int? pageSize = null, bool? excludeBody = null, string authorSlug = null, string categorySlug = null, string tagSlug = null)
+        public static void MockSuccessfullPostsResponse(this ButterCMSClientWithMockedHttp butterClient, int? page = null, int? pageSize = null, bool? excludeBody = null, string authorSlug = null, string categorySlug = null, string tagSlug = null, string query = null)
         {
-            butterClient.MockSuccessfullJSONResponse(AppendParamsToListPostsUrl(page, pageSize, excludeBody, authorSlug, categorySlug, tagSlug), PostsResponse);
+            butterClient.MockSuccessfullJSONResponse(AppendParamsToListPostsUrl(page, pageSize, excludeBody, authorSlug, categorySlug, tagSlug, query), PostsResponse);
         }
 
-        public static void MockSuccessfullEmptyPostsResponse(this ButterCMSClientWithMockedHttp butterClient, int? page = null, string authorSlug = null)
+        public static void MockSuccessfullEmptyPostsResponse(this ButterCMSClientWithMockedHttp butterClient, int? page = null, string authorSlug = null, int? pageSize = null, string query = null)
         {
-            butterClient.MockSuccessfullJSONResponse(AppendParamsToListPostsUrl(page, authorSlug: authorSlug), new PostsResponse()
+            butterClient.MockSuccessfullJSONResponse(AppendParamsToListPostsUrl(page, authorSlug: authorSlug, pageSize: pageSize, query: query), new PostsResponse()
+            {
+                Data = new Post[] { },
+                Meta = new PostsMeta()
+                {
+                    Count = 0,
+                    NextPage = null,
+                    PreviousPage = null,
+                }
+            });
+        }
+
+        public static void MockSuccessfullSearchPostsResponse(this ButterCMSClientWithMockedHttp butterClient, int? page = null, int? pageSize = null, string query = null)
+        {
+            butterClient.MockSuccessfullJSONResponse(AppendParamsToSearchPostsUrl(page, pageSize, query), PostsResponse);
+        }
+
+        public static void MockSuccessfullEmptySearchPostsResponse(this ButterCMSClientWithMockedHttp butterClient, int? page = null, int? pageSize = null, string query = null)
+        {
+            butterClient.MockSuccessfullJSONResponse(AppendParamsToSearchPostsUrl(page, pageSize: pageSize, query: query), new PostsResponse()
             {
                 Data = new Post[] { },
                 Meta = new PostsMeta()
