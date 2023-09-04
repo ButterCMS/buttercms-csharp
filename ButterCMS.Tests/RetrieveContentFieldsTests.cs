@@ -1,6 +1,9 @@
 ﻿using ButterCMS.Tests.Models;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using System.Threading.Tasks;
+using ButterCMS.Models;
+using System;
 
 namespace ButterCMS.Tests
 {
@@ -8,49 +11,79 @@ namespace ButterCMS.Tests
     [Category("RetrieveContentFields")]
     public class RetrieveContentFieldsTests
     {
-        [Test]
-        public void RetrieveContentFieldsJSON_ShouldReturnDictionaryString()
+        private ButterCMSClientWithMockedHttp butterClient;
+
+        [SetUp]
+        public void SetUp()
         {
-            var butterClient = new ButterCMSClient("321478403e868f0fc41f0115731f330ff720ce0b");
-            var keys = new string[2] {"team_members[name=Elon]", "homepage_headline"};
-            var contentFields = butterClient.RetrieveContentFieldsJSON(keys);
-            Assert.IsNotNull(contentFields);
+            butterClient = Common.SetUpMockedButterClient();
         }
 
         [Test]
-        public void RetrieveContentFieldsJSON_ShouldReturnEmptyString()
+        public void RetrieveContentFieldsJSON_ShouldReturnTeamMembersHeadline() 
         {
-            var butterClient = new ButterCMSClient("321478403e868f0fc41f0115731f330ff720ce0b");
-            var keys = new string[1] { "NOTAREALKEY" };
-            var actual = butterClient.RetrieveContentFieldsJSON(keys);
-            var expected = string.Empty;
-            Assert.AreEqual(expected, actual);
+            var keys = new string[] { "team_members[name=Elon]", "homepage_headline" };
+
+            butterClient.MockSuccessfullContentFieldsJSONResponse(keys, ContentFieldsMocks.ContentFieldsResponse.Data);
+
+            var teamMembersAndHeadline = butterClient.RetrieveContentFieldsJSON(keys);
+            AssertContentFieldJSON(teamMembersAndHeadline, ContentFieldsMocks.ContentFieldsResponse.Data);
         }
 
         [Test]
-        public async Task RetrieveContentFieldsJSONAsync_ShouldReturnDictionaryString()
+        public void RetrieveContentFieldsJSON_ShouldReturnEmptyString() 
         {
-            var butterClient = new ButterCMSClient("321478403e868f0fc41f0115731f330ff720ce0b");
-            var keys = new string[2] { "team_members[name=Elon]", "homepage_headline" };
-            var contentFields = await butterClient.RetrieveContentFieldsJSONAsync(keys);
-            Assert.IsNotNull(contentFields);
+            var keys = new string[] { "NOTAREALKEY" };
+
+            butterClient.MockSuccessfullContentFieldsJSONResponse(keys, null);
+
+            var teamMembersAndHeadline = butterClient.RetrieveContentFieldsJSON(keys);
+            AssertContentFieldJSON(teamMembersAndHeadline, null);
         }
 
         [Test]
-        public async Task RetrieveContentFieldsJSONAsync_ShouldReturnEmptyString()
+        public async Task RetrieveContentFieldsJSONAsync_ShouldReturnTeamMembersHeadline() 
         {
-            var butterClient = new ButterCMSClient("321478403e868f0fc41f0115731f330ff720ce0b");
-            var keys = new string[1] { "NOTAREALKEY" };
-            var actual = await butterClient.RetrieveContentFieldsJSONAsync(keys);
-            var expected = string.Empty;
-            Assert.AreEqual(expected, actual);
+            var keys = new string[] { "team_members[name=Elon]", "homepage_headline" };
+
+            butterClient.MockSuccessfullContentFieldsJSONResponse(keys, ContentFieldsMocks.ContentFieldsResponse.Data);
+
+            var teamMembersAndHeadline = await butterClient.RetrieveContentFieldsJSONAsync(keys);
+            AssertContentFieldJSON(teamMembersAndHeadline, ContentFieldsMocks.ContentFieldsResponse.Data);
+        }
+
+        [Test]
+        public async Task RetrieveContentFieldsJSONAsync_ShouldReturnEmptyString() 
+        {
+            var keys = new string[] { "NOTAREALKEY" };
+
+            butterClient.MockSuccessfullContentFieldsJSONResponse(keys, null);
+
+            var teamMembersAndHeadline = await butterClient.RetrieveContentFieldsJSONAsync(keys);
+            AssertContentFieldJSON(teamMembersAndHeadline, null);
+        }
+
+        private void AssertContentFieldJSON(string json, TeamMembersHeadline expected)
+        {
+            var teamMembersAndHeadline = JsonConvert.DeserializeObject<TeamMembersHeadline>(json);
+
+            if (expected == null)
+            {
+                Assert.IsNull(teamMembersAndHeadline);
+                return;
+            }
+
+            Assert.AreEqual(expected.homepage_headline, teamMembersAndHeadline.homepage_headline);
+            Assert.AreEqual(expected.team_members[0].bio, teamMembersAndHeadline.team_members[0].bio);
         }
 
         [Test]
         public void RetrieveContentFields_ShouldReturnTeamMembersHeadline()
         {
-            var butterClient = new ButterCMSClient("321478403e868f0fc41f0115731f330ff720ce0b");
             var keys = new string[2] { "team_members[name=Elon]", "homepage_headline" };
+
+            butterClient.MockSuccessfullContentFieldsResponse(keys, ContentFieldsMocks.ContentFieldsResponse);
+
             var teamMembersAndHeadline = butterClient.RetrieveContentFields<TeamMembersHeadline>(keys);
             Assert.IsNotNull(teamMembersAndHeadline);
         }
@@ -58,8 +91,10 @@ namespace ButterCMS.Tests
         [Test]
         public async Task RetrieveContentFieldsAsync_ShouldReturnTeamMembersHeadline()
         {
-            var butterClient = new ButterCMSClient("321478403e868f0fc41f0115731f330ff720ce0b");
             var keys = new string[2] { "team_members[name=Elon]", "homepage_headline" };
+
+            butterClient.MockSuccessfullContentFieldsResponse(keys, ContentFieldsMocks.ContentFieldsResponse);
+
             var teamMembersAndHeadline = await butterClient.RetrieveContentFieldsAsync<TeamMembersHeadline>(keys);
             Assert.IsNotNull(teamMembersAndHeadline);
         }
@@ -68,8 +103,10 @@ namespace ButterCMS.Tests
         
         public void  RetrieveContentFields_ShouldThrowContentFieldObjectMismatchException()
         {
-            var butterClient = new ButterCMSClient("321478403e868f0fc41f0115731f330ff720ce0b");
             var keys = new string[2] { "team_members[name=Elon]", "homepage_headline" };
+
+            butterClient.MockSuccessfullContentFieldsResponse(keys, ContentFieldsMocks.ContentFieldsResponse);
+
             Assert.Throws<ContentFieldObjectMismatchException>(() => butterClient.RetrieveContentFields<string>(keys));
         }
     }
