@@ -20,5 +20,10 @@ namespace ButterCMS.Tests
         {
             butterClient.MockSuccessfullJSONResponse($"https://api.buttercms.com/v2/feeds/rss/?auth_token={ButterCMSClientWithMockedHttp.MockedApiKey}", FeedResponse);
         }
+
+        public static void MockSuccessfullAtomResponse (this ButterCMSClientWithMockedHttp butterClient)
+        {
+            butterClient.MockSuccessfullJSONResponse($"https://api.buttercms.com/v2/feeds/atom/?auth_token={ButterCMSClientWithMockedHttp.MockedApiKey}", FeedResponse);
+        }
     }
 }

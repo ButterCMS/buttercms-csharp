@@ -22,13 +22,14 @@ namespace ButterCMS.Tests
         [Test]
         public void ListPages_ShouldReturnPages()
         {
-            butterClient.MockSuccessfullPagesResponse(); 
-
             var dict = new Dictionary<string, string>()
             {
                 {"fields.thing1", "1"},
             };
-            var response = butterClient.ListPages<things>("things", dict);
+
+            butterClient.MockSuccessfullPagesResponse(parameters: dict); 
+
+            var response = butterClient.ListPages<things>(PagesMocks.PageType, dict);
             var page = response.Data.First();
             Assert.AreEqual(page.Name, PagesMocks.Page.Name);
             Assert.AreEqual(page.Slug, PagesMocks.Page.Slug);
@@ -43,7 +44,7 @@ namespace ButterCMS.Tests
         {
             butterClient.MockSuccessfullPagesResponse(); 
 
-            var response = await butterClient.ListPagesAsync<things>("things");
+            var response = await butterClient.ListPagesAsync<things>(PagesMocks.PageType);
             
             var page = response.Data.First();
             Assert.AreEqual(page.Name, PagesMocks.Page.Name);

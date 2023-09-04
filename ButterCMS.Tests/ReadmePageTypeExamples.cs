@@ -19,6 +19,7 @@ namespace ButterCMS.Tests
 
 
         [Test]
+        [Ignore("This test is ignored because it is used as an example in the readme. Actual functionality is tested in ListPagesTests.cs")]
         public void ReadmeExample_ListPages()
         {
             int page = 1;
@@ -55,6 +56,7 @@ namespace ButterCMS.Tests
         }
 
         [Test]
+        [Ignore("This test is ignored because it is used as an example in the readme. Actual functionality is tested in RetrievePageTests.cs")]
         public void ReadmeExample_RetrievePage()
         {
             var slug = "chicken-soup";
