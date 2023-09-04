@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using ButterCMS.Models;
 
 namespace ButterCMS.Tests
@@ -28,6 +27,16 @@ namespace ButterCMS.Tests
                 Count = 2,
                 NextPage = 2,
                 PreviousPage = null,
+            }
+        };
+
+        public static PostResponse PostResponse = new PostResponse()
+        {
+            Data = Post,
+            Meta = new PostMeta()
+            {
+                NextPost = new PostLight() { Slug = "next-post"},
+                PreviousPost = new PostLight() { Slug = "previous-post" },
             }
         };
 
@@ -125,6 +134,20 @@ namespace ButterCMS.Tests
                     NextPage = null,
                     PreviousPage = null,
                 }
+            });
+        }
+
+        public static void MockSuccessfullPostResponse(this ButterCMSClientWithMockedHttp butterClient, string slug)
+        {
+            butterClient.MockSuccessfullJSONResponse($"https://api.buttercms.com/v2/posts/{slug}/?auth_token={ButterCMSClientWithMockedHttp.MockedApiKey}", PostResponse);
+        }
+        
+        public static void MockSuccessfullNullPostResponse(this ButterCMSClientWithMockedHttp butterClient, string slug) 
+        {
+            butterClient.MockSuccessfullJSONResponse($"https://api.buttercms.com/v2/posts/{slug}/?auth_token={ButterCMSClientWithMockedHttp.MockedApiKey}", new PostResponse()
+            {
+                Data = null,
+                Meta = null,
             });
         }
     }
