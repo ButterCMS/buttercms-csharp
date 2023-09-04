@@ -1,5 +1,6 @@
 ﻿using ButterCMS.Tests.Models;
 using ButterCMS.Models;
+using Newtonsoft.Json;
 
 namespace ButterCMS.Tests
 {
@@ -7,12 +8,14 @@ namespace ButterCMS.Tests
     {
         public static things Fields = new things() { thing1 = "Bike", thing2 = "MTB" };
 
+        public const string PageType = "BikeList";
+
         public static Page<things> Page = new Page<things>()
         {
             Name = "Bike page",
             Slug = "bikes",
             Updated = new System.DateTime(),
-            PageType = "BikeList",
+            PageType = PageType,
             Fields = Fields
         };
 
@@ -27,9 +30,24 @@ namespace ButterCMS.Tests
             }
         };
 
-        public static void MockSuccessfullPagesResponse(this ButterCMSClientWithMockedHttp butterClient)
+        public static PageResponse<things> PageResponse = new PageResponse<things>()
         {
-            butterClient.MockSuccessfullJSONResponse($"https://api.buttercms.com/v2/pages/things/?auth_token={ButterCMSClientWithMockedHttp.MockedApiKey}", PagesResponse);
+            Data = Page,
+        };
+
+        public static void MockSuccessfullPagesResponse(this ButterCMSClientWithMockedHttp butterClient, string pageType = PageType)
+        {
+            butterClient.MockSuccessfullJSONResponse($"https://api.buttercms.com/v2/pages/${pageType}/?auth_token={ButterCMSClientWithMockedHttp.MockedApiKey}", PagesResponse);
+        }
+
+        public static void MockSuccessfullPageResponse(this ButterCMSClientWithMockedHttp butterClient, string slug, string pageType = PageType) 
+        {
+            butterClient.MockSuccessfullJSONResponse($"https://api.buttercms.com/v2/pages/{pageType}/{slug}/?auth_token={ButterCMSClientWithMockedHttp.MockedApiKey}", PageResponse, new JsonSerializerSettings());
+        }
+
+        public static void MockSuccessfullNullPageResponse(this ButterCMSClientWithMockedHttp butterClient, string slug, string pageType = PageType)
+        {
+            butterClient.MockSuccessfullJSONResponse($"https://api.buttercms.com/v2/pages/{pageType}/{slug}/?auth_token={ButterCMSClientWithMockedHttp.MockedApiKey}", new PageResponse<things>() { Data = null });
         }
     }
 }
