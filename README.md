@@ -1,6 +1,6 @@
 # buttercms-csharp
 
-.NET Library for ButterCMS API.
+.NET Standard (2.1) Library for ButterCMS API.
 
 ## Documentation
 
@@ -25,7 +25,7 @@ Or by adding the package manually to the project file
 
 ```xml
 <ItemGroup>
-<PackageReference Include="ButterCMS" Version="1.4.1" />
+<PackageReference Include="ButterCMS" Version="2.0.0" />
 </ItemGroup>
 ```
 
