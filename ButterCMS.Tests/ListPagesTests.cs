@@ -1,19 +1,22 @@
-﻿using ButterCMS.Tests.Models;
+using ButterCMS.Models;
+using ButterCMS.Tests.Models;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ButterCMS.Tests
 {
     [TestFixture]
+    [Category("ListPages")]
     public class ListPagesTests
     {
-        private ButterCMSClient butterClient;
+        private ButterCMSClientWithMockedHttp butterClient;
 
-        [OneTimeSetUp]
+        [SetUp]
         public void SetUp()
         {
-            butterClient = Common.SetUpButterClient();
+            butterClient = Common.SetUpMockedButterClient();
         }
 
         [Test]
@@ -23,15 +26,33 @@ namespace ButterCMS.Tests
             {
                 {"fields.thing1", "1"},
             };
-            var response = butterClient.ListPages<things>("things", dict);
-            Assert.IsNotNull(response);
+
+            butterClient.MockSuccessfullPagesResponse(parameters: dict); 
+
+            var response = butterClient.ListPages<things>(PagesMocks.PageType, dict);
+            var page = response.Data.First();
+            Assert.AreEqual(page.Name, PagesMocks.Page.Name);
+            Assert.AreEqual(page.Slug, PagesMocks.Page.Slug);
+            Assert.AreEqual(page.Updated, PagesMocks.Page.Updated);
+            Assert.AreEqual(page.PageType, PagesMocks.Page.PageType);
+            Assert.AreEqual(page.Fields.thing1, PagesMocks.Fields.thing1);
+            Assert.AreEqual(page.Fields.thing2, PagesMocks.Fields.thing2);
         }
 
         [Test]
         public async Task ListPagesAsync_ShouldReturnPages()
         {
-            var response = await butterClient.ListPagesAsync<things>("things");
-            Assert.IsNotNull(response);
+            butterClient.MockSuccessfullPagesResponse(); 
+
+            var response = await butterClient.ListPagesAsync<things>(PagesMocks.PageType);
+            
+            var page = response.Data.First();
+            Assert.AreEqual(page.Name, PagesMocks.Page.Name);
+            Assert.AreEqual(page.Slug, PagesMocks.Page.Slug);
+            Assert.AreEqual(page.Updated, PagesMocks.Page.Updated);
+            Assert.AreEqual(page.PageType, PagesMocks.Page.PageType);
+            Assert.AreEqual(page.Fields.thing1, PagesMocks.Fields.thing1);
+            Assert.AreEqual(page.Fields.thing2, PagesMocks.Fields.thing2);
         }
 
         [Test]

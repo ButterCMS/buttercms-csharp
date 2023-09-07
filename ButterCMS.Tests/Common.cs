@@ -1,5 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
-using System.IO;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using RichardSzalay.MockHttp;
 
 namespace ButterCMS.Tests
 {
@@ -13,5 +14,7 @@ namespace ButterCMS.Tests
             Configuration = builder.Build();
             return new ButterCMSClient(Configuration["apiKey"]);
         }
+
+        public static ButterCMSClientWithMockedHttp SetUpMockedButterClient() => new ButterCMSClientWithMockedHttp(new MockHttpMessageHandler());
     }
 }

@@ -621,6 +621,16 @@ Layout = "~/Views/Shared/Layouts/_Layout.cshtml";
 
 ## Exceptions
 
+## Testing
+
+To run SDK test just simply:
+
+```
+PM> dotnet test
+```
+
+Or use Visual Studio Test Explorer. 
+
 ### InvalidKeyException
 
 The library throws this exception when the Butter API key used to instatiate the client was not valid.
