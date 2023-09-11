@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1</TargetFrameworks>
     <OldToolsVersion>2.0</OldToolsVersion>
@@ -16,7 +16,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <PackageId>ButterCMS</PackageId>
-    <PackageVersion>1.4.1</PackageVersion>
+    <PackageVersion>2.0.0</PackageVersion>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags>ButterCMS CMS</PackageTags>
     <PackageLicenseUrl>https://github.com/buttercms/buttercms-csharp/blob/master/LICENSE</PackageLicenseUrl>
