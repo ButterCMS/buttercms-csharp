@@ -2,10 +2,11 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1</TargetFrameworks>
     <OldToolsVersion>2.0</OldToolsVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
-    <Version>2.0.0</Version>
-    <FileVersion>2.0.0</FileVersion>
+    <Version>2.0.0</Version> <!-- {x-release-please-version} -->
+    <FileVersion>2.0.0</FileVersion> <!-- {x-release-please-version} -->
     <Authors>Brandon Nicoll; ButterCMS</Authors>
     <Description>API Client for ButterCMS; including both synchronous and asynchronous API endpoint methods.</Description>
     <Copyright>Copyright (c) 2020 ButterCMS</Copyright>
@@ -16,15 +17,22 @@
   </PropertyGroup>
   <PropertyGroup>
     <PackageId>ButterCMS</PackageId>
-    <PackageVersion>2.0.0</PackageVersion>
+    <PackageVersion>2.0.0</PackageVersion> <!-- {x-release-please-version} -->
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags>ButterCMS CMS</PackageTags>
-    <PackageLicenseUrl>https://github.com/buttercms/buttercms-csharp/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/buttercms/buttercms-csharp/</PackageProjectUrl>
-    <PackageIconUrl>https://avatars0.githubusercontent.com/u/16144259</PackageIconUrl>
+    <PackageIcon>icon.png</PackageIcon>
     <PackageReleaseNotes>Name is now included in pages</PackageReleaseNotes>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/ButterCMS/buttercms-csharp</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryCommit>commit</RepositoryCommit> <!-- Value is inserted in CI right before publish -->
   </PropertyGroup>
   <ItemGroup>
+    <None Include="../misc/icon.png" Pack="true" PackagePath="\" /> 
+    <None Include="../LICENSE" Pack="true" PackagePath="\" />
+    <None Include="../README.md" Pack="true" PackagePath="\" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 </Project>
