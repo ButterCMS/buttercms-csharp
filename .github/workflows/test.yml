@@ -1,19 +1,19 @@
 name: Testing
 
-on: [push]
+on: 
+  workflow_call:
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
+  unit-tests:
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         dotnet-version: [ '7.0.x' ]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.5.3
       - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v3.2.0
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
       - name: Install dependencies
