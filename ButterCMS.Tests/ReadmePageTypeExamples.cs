@@ -42,12 +42,12 @@ namespace ButterCMS.Tests
             foreach (Page<RecipePage> recipe in recipePages.Data)
             {
                 RecipeViewModel recipeViewModel = new RecipeViewModel();
-                recipeViewModel.Category = recipe.Fields.category;
-                recipeViewModel.RecipeName = recipe.Fields.recipe_name;
-                recipeViewModel.MainIngredient = recipe.Fields.main_ingredient;
-                recipeViewModel.EstimatedCookingTimeInMinutes = recipe.Fields.estimated_cooking_time_in_minutes;
-                recipeViewModel.IngredientList = recipe.Fields.ingredient_list;
-                recipeViewModel.Instructions = recipe.Fields.instructions;
+                recipeViewModel.Category = recipe.Fields.Category;
+                recipeViewModel.RecipeName = recipe.Fields.RecipeName;
+                recipeViewModel.MainIngredient = recipe.Fields.MainIngredient;
+                recipeViewModel.EstimatedCookingTimeInMinutes = recipe.Fields.EstimatedCookingTimeInMinutes;
+                recipeViewModel.IngredientList = recipe.Fields.IngredientList;
+                recipeViewModel.Instructions = recipe.Fields.Instructions;
 
                 viewModel.Recipes.Add(recipeViewModel);
             }
@@ -64,12 +64,12 @@ namespace ButterCMS.Tests
             PageResponse<RecipePage> recipe = butterClient.RetrievePage<RecipePage>("recipe", slug);
 
             var viewModel = new RecipeViewModel();
-            viewModel.Category = recipe.Data.Fields.category;
-            viewModel.RecipeName = recipe.Data.Fields.recipe_name;
-            viewModel.MainIngredient = recipe.Data.Fields.main_ingredient;
-            viewModel.EstimatedCookingTimeInMinutes = recipe.Data.Fields.estimated_cooking_time_in_minutes;
-            viewModel.IngredientList = recipe.Data.Fields.ingredient_list;
-            viewModel.Instructions = recipe.Data.Fields.instructions;
+            viewModel.Category = recipe.Data.Fields.Category;
+            viewModel.RecipeName = recipe.Data.Fields.RecipeName;
+            viewModel.MainIngredient = recipe.Data.Fields.MainIngredient;
+            viewModel.EstimatedCookingTimeInMinutes = recipe.Data.Fields.EstimatedCookingTimeInMinutes;
+            viewModel.IngredientList = recipe.Data.Fields.IngredientList;
+            viewModel.Instructions = recipe.Data.Fields.Instructions;
             viewModel.Updated = recipe.Data.Updated;
             viewModel.Published = recipe.Data.Published;
 

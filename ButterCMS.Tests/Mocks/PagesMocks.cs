@@ -9,11 +9,11 @@ namespace ButterCMS.Tests
 {
     public static class PagesMocks
     {
-        public static things Fields = new things() { thing1 = "Bike", thing2 = "MTB" };
+        public static Things Fields = new Things() { Thing1 = "Bike", Thing2 = "MTB" };
 
         public const string PageType = "BikeList";
 
-        public static Page<things> Page = new Page<things>()
+        public static Page<Things> Page = new Page<Things>()
         {
             Name = "Bike page",
             Slug = "bikes",
@@ -22,7 +22,7 @@ namespace ButterCMS.Tests
             Fields = Fields
         };
 
-        public static PagesResponse<things> PagesResponse = new PagesResponse<things>()
+        public static PagesResponse<Things> PagesResponse = new PagesResponse<Things>()
         {
             Data = new[] { Page },
             Meta = new PageMeta()
@@ -33,7 +33,7 @@ namespace ButterCMS.Tests
             }
         };
 
-        public static PageResponse<things> PageResponse = new PageResponse<things>()
+        public static PageResponse<Things> PageResponse = new PageResponse<Things>()
         {
             Data = Page,
         };
@@ -52,7 +52,7 @@ namespace ButterCMS.Tests
 
         public static void MockSuccessfullNullPageResponse(this ButterCMSClientWithMockedHttp butterClient, string slug, string pageType = PageType)
         {
-            butterClient.MockSuccessfullJSONResponse($"https://api.buttercms.com/v2/pages/{pageType}/{slug}/?auth_token={ButterCMSClientWithMockedHttp.MockedApiKey}", new PageResponse<things>() { Data = null });
+            butterClient.MockSuccessfullJSONResponse($"https://api.buttercms.com/v2/pages/{pageType}/{slug}/?auth_token={ButterCMSClientWithMockedHttp.MockedApiKey}", new PageResponse<Things>() { Data = null });
         }
     }
 }

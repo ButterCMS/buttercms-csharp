@@ -29,14 +29,14 @@ namespace ButterCMS.Tests
 
             butterClient.MockSuccessfullPagesResponse(parameters: dict); 
 
-            var response = butterClient.ListPages<things>(PagesMocks.PageType, dict);
+            var response = butterClient.ListPages<Things>(PagesMocks.PageType, dict);
             var page = response.Data.First();
             Assert.AreEqual(page.Name, PagesMocks.Page.Name);
             Assert.AreEqual(page.Slug, PagesMocks.Page.Slug);
             Assert.AreEqual(page.Updated, PagesMocks.Page.Updated);
             Assert.AreEqual(page.PageType, PagesMocks.Page.PageType);
-            Assert.AreEqual(page.Fields.thing1, PagesMocks.Fields.thing1);
-            Assert.AreEqual(page.Fields.thing2, PagesMocks.Fields.thing2);
+            Assert.AreEqual(page.Fields.Thing1, PagesMocks.Fields.Thing1);
+            Assert.AreEqual(page.Fields.Thing2, PagesMocks.Fields.Thing2);
         }
 
         [Test]
@@ -44,28 +44,28 @@ namespace ButterCMS.Tests
         {
             butterClient.MockSuccessfullPagesResponse(); 
 
-            var response = await butterClient.ListPagesAsync<things>(PagesMocks.PageType);
+            var response = await butterClient.ListPagesAsync<Things>(PagesMocks.PageType);
             
             var page = response.Data.First();
             Assert.AreEqual(page.Name, PagesMocks.Page.Name);
             Assert.AreEqual(page.Slug, PagesMocks.Page.Slug);
             Assert.AreEqual(page.Updated, PagesMocks.Page.Updated);
             Assert.AreEqual(page.PageType, PagesMocks.Page.PageType);
-            Assert.AreEqual(page.Fields.thing1, PagesMocks.Fields.thing1);
-            Assert.AreEqual(page.Fields.thing2, PagesMocks.Fields.thing2);
+            Assert.AreEqual(page.Fields.Thing1, PagesMocks.Fields.Thing1);
+            Assert.AreEqual(page.Fields.Thing2, PagesMocks.Fields.Thing2);
         }
 
         [Test]
         public void ListPages_NoResults_ShouldReturnNull()
         {
-            var response =  butterClient.ListPages<things>("nothings");
+            var response =  butterClient.ListPages<Things>("nothings");
             Assert.IsNull(response);
         }
 
         [Test]
         public async Task ListPagesAsync_NoResults_ShouldReturnNull()
         {
-            var response = await butterClient.ListPagesAsync<things>("nothings");
+            var response = await butterClient.ListPagesAsync<Things>("nothings");
             Assert.IsNull(response);
         }
     }
