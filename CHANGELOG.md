@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.2](https://github.com/ButterCMS/buttercms-csharp/compare/v2.0.1...v2.0.2) (2023-10-25)
+
+
+### Bug Fixes
+
+* refactor test model names to be PascalCase ([88e3358](https://github.com/ButterCMS/buttercms-csharp/commit/88e3358094ebaa0998f62d7090c175fcf0325bb2))
+
 ## [2.0.1](https://github.com/ButterCMS/buttercms-csharp/compare/v2.0.0...v2.0.1) (2023-10-13)
 
 
