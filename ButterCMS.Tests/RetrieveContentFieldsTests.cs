@@ -73,8 +73,8 @@ namespace ButterCMS.Tests
                 return;
             }
 
-            Assert.AreEqual(expected.homepage_headline, teamMembersAndHeadline.homepage_headline);
-            Assert.AreEqual(expected.team_members[0].bio, teamMembersAndHeadline.team_members[0].bio);
+            Assert.AreEqual(expected.HomepageHeadline, teamMembersAndHeadline.HomepageHeadline);
+            Assert.AreEqual(expected.TeamMembers[0].Bio, teamMembersAndHeadline.TeamMembers[0].Bio);
         }
 
         [Test]

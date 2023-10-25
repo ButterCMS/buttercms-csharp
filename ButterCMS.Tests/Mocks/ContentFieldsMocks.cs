@@ -10,18 +10,18 @@ namespace ButterCMS.Tests
         {
             Data = new TeamMembersHeadline()
             {
-                homepage_headline = "ButterCMS C# SDK",
-                team_members = new[]
+                HomepageHeadline = "ButterCMS C# SDK",
+                TeamMembers = new[]
                 {
-                    new Team_Members()
+                    new TeamMembers()
                     {
-                        name = "Elon",
-                        bio = "CEO"
+                        Name = "Elon",
+                        Bio = "CEO"
                     },
-                    new Team_Members()
+                    new TeamMembers()
                     {
-                        name = "Steve",
-                        bio = "CTO"
+                        Name = "Steve",
+                        Bio = "CTO"
                     }
                 }
             }

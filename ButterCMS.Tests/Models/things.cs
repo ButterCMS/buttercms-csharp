@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace ButterCMS.Tests.Models
 {
-    public class things
+    public class Things
     {
-        public string thing1 { get; set; }
-        public string thing2 { get; set; }
+        public string Thing1 { get; set; }
+        public string Thing2 { get; set; }
     }
 
 }

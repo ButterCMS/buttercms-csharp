@@ -23,14 +23,14 @@ namespace ButterCMS.Tests
         {
             butterClient.MockSuccessfullPageResponse(PagesMocks.Page.Slug);
 
-            var response = butterClient.RetrievePage<things>(PagesMocks.Page.PageType, PagesMocks.Page.Slug);
+            var response = butterClient.RetrievePage<Things>(PagesMocks.Page.PageType, PagesMocks.Page.Slug);
             Assert.IsNotNull(response);
 
             var page = response.Data;
             Assert.AreEqual(PagesMocks.Page.Name, page.Name);
             Assert.AreEqual(PagesMocks.Page.Slug, page.Slug);
             Assert.AreEqual(PagesMocks.Page.Updated, page.Updated);
-            Assert.AreEqual(PagesMocks.Page.Fields.thing1, page.Fields.thing1);
+            Assert.AreEqual(PagesMocks.Page.Fields.Thing1, page.Fields.Thing1);
         }
 
         [Test]
@@ -38,14 +38,14 @@ namespace ButterCMS.Tests
         {
             butterClient.MockSuccessfullPageResponse(PagesMocks.Page.Slug);
 
-            var response = await butterClient.RetrievePageAsync<things>(PagesMocks.Page.PageType, PagesMocks.Page.Slug);
+            var response = await butterClient.RetrievePageAsync<Things>(PagesMocks.Page.PageType, PagesMocks.Page.Slug);
             Assert.IsNotNull(response);
 
             var page = response.Data;
             Assert.AreEqual(PagesMocks.Page.Name, page.Name);
             Assert.AreEqual(PagesMocks.Page.Slug, page.Slug);
             Assert.AreEqual(PagesMocks.Page.Updated, page.Updated);
-            Assert.AreEqual(PagesMocks.Page.Fields.thing1, page.Fields.thing1);
+            Assert.AreEqual(PagesMocks.Page.Fields.Thing1, page.Fields.Thing1);
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace ButterCMS.Tests
 
             butterClient.MockSuccessfullNullPageResponse(slug);
 
-            var response = butterClient.RetrievePage<things>(slug, slug);
+            var response = butterClient.RetrievePage<Things>(slug, slug);
             Assert.IsNull(response);
         }
 
@@ -66,7 +66,7 @@ namespace ButterCMS.Tests
 
             butterClient.MockSuccessfullNullPageResponse(slug);
 
-            var response = await butterClient.RetrievePageAsync<things>(slug, slug);
+            var response = await butterClient.RetrievePageAsync<Things>(slug, slug);
             Assert.IsNull(response);
         }
     }
