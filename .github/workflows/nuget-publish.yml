@@ -40,7 +40,7 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v3.2.0
 
-      - uses: actions/download-artifact@v3.0.2
+      - uses: actions/download-artifact@v4.1.7
         with:
           name: ${{ env.NUGET_ARTIFACT }}
           path: ${{ env.NUGET_DIR }}
@@ -55,7 +55,7 @@ jobs:
     runs-on: ubuntu-22.04
     needs: [validate-nuget, testing]
     steps:
-      - uses: actions/download-artifact@v3.0.2
+      - uses: actions/download-artifact@v4.1.7
         with:
           name: ${{ env.NUGET_ARTIFACT }}
           path: ${{ env.NUGET_DIR }}
