@@ -12,5 +12,8 @@ namespace ButterCMS.Models
         [JsonProperty("page_type")]
         public string PageType { get; set; }
         public T Fields { get; set; }
+        public StatusEnum Status { get; set; }
+        public DateTime Scheduled { get; set; }
     }
 }
+

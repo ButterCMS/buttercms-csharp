@@ -1,9 +1,11 @@
 ﻿namespace ButterCMS.Models
 {
-    public enum PostStatusEnum
+    public enum StatusEnum
     {
         Unknown = 0,
         Draft = 1,
-        Published = 2
+        Published = 2,
+        Scheduled = 3
     }
 }
+
