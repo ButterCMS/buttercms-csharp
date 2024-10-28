@@ -23,7 +23,7 @@ namespace ButterCMS
         private TimeSpan defaultTimeout = new TimeSpan(0, 0, 10);
         private int maxRequestTries;
 
-        private const string apiBaseAddress = "https://api.buttercms.com/";
+        private const string apiBaseAddressDefault = "https://api.buttercms.com/";
 
         private const string listPostsEndpoint = "v2/posts/";
         private const string retrievePostEndpoint = "v2/posts/{0}/";
@@ -56,6 +56,7 @@ namespace ButterCMS
             System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 #endif
 
+            string apiBaseAddress = Environment.GetEnvironmentVariable("API_BASE_URL") ?? apiBaseAddressDefault;
             httpClient = new HttpClient(httpMessageHandler ?? new HttpClientHandler
             {
                 AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip
