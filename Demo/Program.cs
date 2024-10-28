@@ -37,7 +37,6 @@ namespace ButterCMSDemo
                 var pageResponse = client.RetrievePage<PageFields>("*", "test-page-1", parameters);
                 var page = pageResponse.Data;
                 Console.WriteLine("Page retrieved successfully");
-                Console.WriteLine($"Page: {page}");
                 Console.WriteLine($"Page Slug: {page.Slug}");
                 Console.WriteLine($"Page Status: {page.Status}");
                 Console.WriteLine($"Page Scheduled: {page.Scheduled}");
@@ -45,6 +44,20 @@ namespace ButterCMSDemo
             catch (Exception ex)
             {
                 Console.WriteLine($"Error fetching page: {ex.Message}");
+            }
+
+            try 
+            {
+                var postResponse = client.RetrievePost("test-blog-post");
+                var post = postResponse.Data;
+                Console.WriteLine("Post retrieved successfully");
+                Console.WriteLine($"Post Slug: {post.Slug}");
+                Console.WriteLine($"Post Status: {post.Status}");
+                Console.WriteLine($"Post Scheduled: {post.Scheduled}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching post: {ex.Message}");
             }
         }
     }
