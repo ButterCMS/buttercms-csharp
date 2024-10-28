@@ -20,7 +20,7 @@ namespace ButterCMS.Models
         public string SeoTitle { get; set; }
         public string MetaDescription { get; set; }
         public StatusEnum Status { get; set; }
-        public DateTime Scheduled { get; set; }
+        public DateTime? Scheduled { get; set; }
     }
 }
 
