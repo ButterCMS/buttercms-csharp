@@ -532,15 +532,18 @@ Layout = "~/Views/Shared/Layouts/_Layout.cshtml";
 |Summary|string|
 |SeoTitle|string|
 |MetaDescription|string|
-|Status|[PostStatusEnum](#poststatusenum)|
+|Status|[StatusEnum](#statusenum)|
+|Scheduled|DateTime|
 
-### PostStatusEnum
+### StatusEnum
 
 |Constant|Value|
 |---|---|
 |Unknown|0|
 |Draft|1|
 |Published|2|
+|Scheduled|3|
+
 
 ### PostResponse Class
 
@@ -620,6 +623,8 @@ Layout = "~/Views/Shared/Layouts/_Layout.cshtml";
 |Published| DateTime?|
 |PageType| string|
 |Fields|T|
+|Status|[StatusEnum](#statusenum)|
+|Scheduled| DateTime|
 
 ## Exceptions
 
@@ -644,3 +649,4 @@ This exception will be thrown when the library can't fit the returned data from 
 ### PagesObjectMismatchException
 
 This exception will be thrown when the library can't fit the returned data from a Pages request into the passed object class.
+
