@@ -26,7 +26,7 @@ Or by adding the package manually to the project file
 <!-- {x-release-please-start-version} -->
 ```xml
 <ItemGroup>
-<PackageReference Include="ButterCMS" Version="2.0.2" />
+<PackageReference Include="ButterCMS" Version="2.1.0" />
 </ItemGroup>
 ```
 <!-- {x-release-please-end} -->

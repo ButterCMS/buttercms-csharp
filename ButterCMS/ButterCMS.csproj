@@ -5,8 +5,8 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
-    <Version>2.0.2</Version> <!-- {x-release-please-version} -->
-    <FileVersion>2.0.2</FileVersion> <!-- {x-release-please-version} -->
+    <Version>2.1.0</Version> <!-- {x-release-please-version} -->
+    <FileVersion>2.1.0</FileVersion> <!-- {x-release-please-version} -->
     <Authors>Brandon Nicoll; ButterCMS</Authors>
     <Description>API Client for ButterCMS; including both synchronous and asynchronous API endpoint methods.</Description>
     <Copyright>Copyright (c) 2020 ButterCMS</Copyright>
@@ -17,7 +17,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <PackageId>ButterCMS</PackageId>
-    <PackageVersion>2.0.2</PackageVersion> <!-- {x-release-please-version} -->
+    <PackageVersion>2.1.0</PackageVersion> <!-- {x-release-please-version} -->
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags>ButterCMS CMS</PackageTags>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>

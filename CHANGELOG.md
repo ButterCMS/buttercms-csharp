@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.1.0](https://github.com/ButterCMS/buttercms-csharp/compare/v2.0.2...v2.1.0) (2024-12-23)
+
+
+### Features
+
+* add demo project ([fa2bd34](https://github.com/ButterCMS/buttercms-csharp/commit/fa2bd34c531a2a07344121f4509aca7252a7fdb4))
+* parametrize base url ([d015720](https://github.com/ButterCMS/buttercms-csharp/commit/d0157204b91519906b6d731c3b5cfb0df2bf8800))
+* update Page and Post models ([4107059](https://github.com/ButterCMS/buttercms-csharp/commit/41070593dbea37dc12ad78714db5cb3b1e9b8653))
+
+
+### Bug Fixes
+
+* make published and scheduled dates optional ([15c06e2](https://github.com/ButterCMS/buttercms-csharp/commit/15c06e2cff22efe1376161a75c0fd56c3bdf1da5))
+
 ## [2.0.2](https://github.com/ButterCMS/buttercms-csharp/compare/v2.0.1...v2.0.2) (2023-10-25)
 
 
